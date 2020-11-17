@@ -22,5 +22,13 @@ namespace VkontaktePoster
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string vkLogin = textBox1.Text.Trim();
+            string vkPassword = textBox2.Text.Trim();
+
+            if(VKAccount.AddAccount(vkLogin, vkPassword) == false) 
+        }
     }
 }

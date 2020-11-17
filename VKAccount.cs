@@ -30,7 +30,7 @@ namespace VkontaktePoster
         /// </summary>
         /// <param name="login">login to check</param>
         /// <returns>Returns TRUE if login is free and FALSE if login already exists</returns>
-        public static bool IsLoginValid(string login)
+        private static bool IsLoginValid(string login)
         {
             foreach(var acc in VKAccounts)
             {
@@ -40,12 +40,21 @@ namespace VkontaktePoster
             return true;
         }
 
-        public VKAccount(string login, string password)
+        public VKAccount(string login, string password) => Credentials = new VKAccountCredential(login, password);
+
+        /// <summary>
+        /// Creating new vk account, and add it to the all accounts list
+        /// </summary>
+        /// <param name="login">Account login</param>
+        /// <param name="pass">Account password</param>
+        /// <returns>FALSE if account already exists and TRUE if account has been added</returns>
+        public static bool AddAccount(string login, string pass)
         {
-            if (IsLoginValid(login) == false ) throw new Exception("Login already exists"); 
-            
-            Credentials = new VKAccountCredential(login, password);
-            VKAccounts.Add(this);
+            if (IsLoginValid(login) == false) return false;
+
+            VKAccount acc = new VKAccount(login, pass);
+            VKAccounts.Add(acc);
+            return true;
         }
     }
 
