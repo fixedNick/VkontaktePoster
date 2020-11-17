@@ -34,11 +34,15 @@ namespace VkontaktePoster
             if (VKAccount.AddAccount(vkLogin, vkPassword) == false)
             {
                 Notification.ShowNotification("Аккаунт с таким логином уже есть в списке");
+                textBox1.Clear();
+                textBox2.Clear();
                 return;
             }
 
             // Account added
             listBox1.Items.Add(vkLogin);
+            textBox1.Clear();
+            textBox2.Clear();
             // TODO: Добавить сохранение аккаунта в файл бд.
         }
 
@@ -59,6 +63,46 @@ namespace VkontaktePoster
             
             listBox1.Items.RemoveAt(listBox1.SelectedIndex);
             // TODO: Добавить удаление аккаунта из файла бд.
+        }
+
+        /// <summary>
+        /// Add community to the main list
+        /// </summary>
+        private void button10_Click(object sender, EventArgs e)
+        {
+            string communityURL = textBox6.Text;
+            if(communityURL.Contains('.') == false)
+            {
+                Notification.ShowNotification("Неверный формат ссылки.");
+                textBox6.Clear();
+                return;
+            }
+
+            if(VKCommunity.AddCommunity(communityURL) == false)
+            {
+                Notification.ShowNotification("Данное сообщество уже есть в списке");
+                textBox6.Clear();
+                return;
+            }
+
+            listBox5.Items.Add(communityURL);
+            textBox6.Clear();
+            // TODO: Добавить сохранение в бж
+        }
+
+        /// <summary>
+        /// Delete community from the main list
+        /// </summary>
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if(listBox5.SelectedIndex == -1)
+            {
+                Notification.ShowNotification("Для удаления сообщества - выберите его в списке");
+                return;
+            }
+            VKCommunity.DeleteCommunity(listBox5.Items[listBox5.SelectedIndex].ToString());
+
+            listBox5.Items.RemoveAt(listBox5.SelectedIndex);
         }
     }
 }
