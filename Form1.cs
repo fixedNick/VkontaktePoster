@@ -23,6 +23,9 @@ namespace VkontaktePoster
             Notification.SetupNotificationHandler(Notification.ShowMessageBox);
         }
 
+        /// <summary>
+        /// Add account into database
+        /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
             string vkLogin = textBox1.Text.Trim();
@@ -34,7 +37,28 @@ namespace VkontaktePoster
                 return;
             }
 
+            // Account added
+            listBox1.Items.Add(vkLogin);
+            // TODO: Добавить сохранение аккаунта в файл бд.
+        }
 
+        /// <summary>
+        /// Delete account from database
+        /// </summary>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(listBox1.SelectedIndex == -1)
+            {
+                Notification.ShowNotification("Для удаления аккаунта из списка - выберите его");
+                return;
+            }
+
+            string vkLogin = listBox1.Items[listBox1.SelectedIndex].ToString();
+            VKAccount.DeleteAccount(vkLogin);
+            
+            
+            listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+            // TODO: Добавить удаление аккаунта из файла бд.
         }
     }
 }

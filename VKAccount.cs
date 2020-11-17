@@ -56,6 +56,22 @@ namespace VkontaktePoster
             VKAccounts.Add(acc);
             return true;
         }
+
+        /// <summary>
+        /// Deleting vk account from the list of all accounts
+        /// </summary>
+        /// <param name="login">login of vk account</param>
+        public static void DeleteAccount(string login)
+        {
+            foreach(var acc in VKAccounts)
+            {
+                if(acc.Credentials.Login.Equals(login))
+                {
+                    VKAccounts.Remove(acc);
+                    break;
+                }
+            }
+        }
     }
 
     struct VKAccountCredential {
