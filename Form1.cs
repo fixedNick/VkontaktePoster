@@ -20,7 +20,7 @@ namespace VkontaktePoster
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            Notification.SetupNotificationHandler(Notification.ShowMessageBox);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -28,7 +28,13 @@ namespace VkontaktePoster
             string vkLogin = textBox1.Text.Trim();
             string vkPassword = textBox2.Text.Trim();
 
-            if(VKAccount.AddAccount(vkLogin, vkPassword) == false) 
+            if (VKAccount.AddAccount(vkLogin, vkPassword) == false)
+            {
+                Notification.ShowNotification("Аккаунт с таким логином уже есть в списке");
+                return;
+            }
+
+
         }
     }
 }
