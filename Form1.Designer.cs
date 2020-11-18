@@ -525,7 +525,7 @@
             this.button8.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button8.Location = new System.Drawing.Point(9, 6);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(111, 38);
+            this.button8.Size = new System.Drawing.Size(112, 38);
             this.button8.TabIndex = 13;
             this.button8.Text = "Старт";
             this.button8.UseVisualStyleBackColor = true;
