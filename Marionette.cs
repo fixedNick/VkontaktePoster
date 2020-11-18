@@ -24,6 +24,8 @@ namespace VkontaktePoster
         {
             driver = new Driver(settings.SeleniumDriverType, settings.DriverNotificationDelegate, settings.StartMaximized, settings.Headless, settings.HidePrompt, settings.ShowExceiptions, settings.DriverFileName);
         }
+
+        public void Exit() => driver.StopDriver();
     }
 
     /// <summary>
