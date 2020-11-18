@@ -9,6 +9,8 @@ namespace VkontaktePoster
 {
     class Marionette
     {
+        public static readonly List<Marionette> Drivers = new List<Marionette>();
+
         private DriverSettings settings;
         private Driver driver;
 
@@ -16,6 +18,8 @@ namespace VkontaktePoster
         {
             settings = driverSettings;
         }
+
+        public void AddDriver(Marionette driver) => Drivers.Add(driver);
 
         /// <summary>
         /// Initialize driver settings and start driver.
@@ -25,7 +29,18 @@ namespace VkontaktePoster
             driver = new Driver(settings.SeleniumDriverType, settings.DriverNotificationDelegate, settings.StartMaximized, settings.Headless, settings.HidePrompt, settings.ShowExceiptions, settings.DriverFileName);
         }
 
-        public void Exit() => driver.StopDriver();
+        /// <summary>
+        /// Remove current driver from drivers list and stop it
+        /// </summary>
+        public void Exit() { 
+            foreach(var dr in Drivers)
+            {
+                if (dr == this) 
+                    Drivers.Remove(this);
+            }
+
+            driver.StopDriver(); 
+        }
     }
 
     /// <summary>

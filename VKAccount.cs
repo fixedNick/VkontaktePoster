@@ -12,18 +12,19 @@ namespace VkontaktePoster
         /// List of VKAccounts
         /// </summary>
         private static List<VKAccount> VKAccounts = new List<VKAccount>();
+        public static IReadOnlyList<VKAccount> GetAccounts() => VKAccounts.AsReadOnly();
 
         /// <summary>
-        /// List of Products which posting by this VKAccount
+        /// Product which posting by this VKAccount
         /// </summary>
-        public List<Product> Products = new List<Product>();
+        private Product Product;
 
-        public readonly Timestamp Timestamp = new Timestamp();
+        private Timestamp Timestamp = new Timestamp();
 
         /// <summary>
         /// VKAccount credentials for a login to vk.com
         /// </summary>
-        public readonly VKAccountCredential Credentials;
+        private VKAccountCredential Credentials;
 
         /// <summary>
         /// Method check is current login already in VKAccounts list or not
@@ -71,6 +72,27 @@ namespace VkontaktePoster
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Clear data of products connected to this object
+        /// </summary>
+        public void ClearProducts()
+        {
+            Product = null;
+        }
+
+        /// <summary>
+        /// Connect product to this object
+        /// </summary>
+        /// <param name="product">Product object</param>
+        /// <returns>TRUE - OK, FALSE - Another product already connected</returns>
+        public bool ConnectProducts(Product product)
+        {
+            if (Product != null) return false;
+
+            Product = product;
+            return true;
         }
     }
 

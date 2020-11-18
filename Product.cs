@@ -8,6 +8,8 @@ namespace VkontaktePoster
 {
     class Product
     {
+        public static readonly List<Product> Products = new List<Product>();
+
         private string _name;
         public string Name
         {
@@ -60,6 +62,8 @@ namespace VkontaktePoster
             Name = name;
             Description = descr;
             photos = photosList == null ? new List<string>() : photosList;
+
+            Products.Add(this);
         }
     }
 }

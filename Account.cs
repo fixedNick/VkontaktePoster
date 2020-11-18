@@ -24,15 +24,41 @@ namespace VkontaktePoster
         /// </summary>
         public void StopAccount()
         {
-            marionette.Exit();
-
-            foreach(var acc in Accounts)
+            foreach (var acc in Accounts)
             {
-                if(acc.marionette == marionette && acc.vkAccount == vkAccount)
+                if (acc.marionette == marionette && acc.vkAccount == vkAccount)
                 {
                     Accounts.Remove(acc);
                     break;
                 }
+            }
+
+            marionette.Exit();
+            vkAccount.ClearProducts();
+        }
+
+        /// <summary>
+        /// Initialize connections btw VKAccount & Product [1:1], Marionette & VKAccount
+        /// </summary>
+        public static void InitializeRelations()
+        {
+            var defaultDriverSettings = new DriverSettings(SeleniumDriver.Driver.DriverType.Chrome, Notification.ShowMessageBox, true, false, false, true);
+
+            // Connect Products to VKAccounts
+            var vkAccounts = VKAccount.GetAccounts();
+
+            int i = -1;
+            for(int j = 0; j < Product.Products.Count; j++ )
+            {
+                while(++i < vkAccounts.Count && vkAccounts[i].ConnectProducts(Product.Products[j]) == false)
+                    continue;
+            }
+
+            // Connect Driver to VKAccount and create Account object
+            for( int z = 0; z < i; z++)
+            {
+                Account account = new Account(new Marionette(defaultDriverSettings), vkAccounts[z]);
+                Accounts.Add(account);
             }
         }
     }

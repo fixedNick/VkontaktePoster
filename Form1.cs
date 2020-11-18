@@ -104,5 +104,10 @@ namespace VkontaktePoster
 
             listBox5.Items.RemoveAt(listBox5.SelectedIndex);
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Account.InitializeRelations();
+        }
     }
 }
