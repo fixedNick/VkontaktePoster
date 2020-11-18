@@ -17,7 +17,7 @@ namespace VkontaktePoster
         /// <summary>
         /// Product which posting by this VKAccount
         /// </summary>
-        private Product Product;
+        private Product Product = null;
 
         private Timestamp Timestamp = new Timestamp();
 
@@ -92,6 +92,12 @@ namespace VkontaktePoster
             if (Product != null) return false;
 
             Product = product;
+            return true;
+        }
+
+        public bool IsProductConnected()
+        {
+            if (Product == null) return false;
             return true;
         }
     }

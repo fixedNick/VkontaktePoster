@@ -277,6 +277,7 @@
             this.button4.TabIndex = 20;
             this.button4.Text = "Добавить вещь";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label4
             // 
@@ -525,7 +526,7 @@
             this.button8.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button8.Location = new System.Drawing.Point(9, 6);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(112, 38);
+            this.button8.Size = new System.Drawing.Size(120, 38);
             this.button8.TabIndex = 13;
             this.button8.Text = "Старт";
             this.button8.UseVisualStyleBackColor = true;

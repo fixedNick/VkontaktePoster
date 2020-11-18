@@ -47,18 +47,22 @@ namespace VkontaktePoster
             // Connect Products to VKAccounts
             var vkAccounts = VKAccount.GetAccounts();
 
-            int i = -1;
-            for(int j = 0; j < Product.Products.Count; j++ )
+            for(int i = 0, j = 0; i < vkAccounts.Count && j < Product.Products.Count; i++, j++)
             {
-                while(++i < vkAccounts.Count && vkAccounts[i].ConnectProducts(Product.Products[j]) == false)
+                if(vkAccounts[i].IsProductConnected() == true)
+                {
+                    j--; 
                     continue;
+                }
+
+                vkAccounts[i].ConnectProducts(Product.Products[j]);
             }
 
             // Connect Driver to VKAccount and create Account object
-            for( int z = 0; z < i; z++)
+            for( int z = 0; z < vkAccounts.Count; z++ )
             {
+                if (vkAccounts[z].IsProductConnected() == false) continue;
                 Account account = new Account(new Marionette(defaultDriverSettings), vkAccounts[z]);
-                Accounts.Add(account);
             }
         }
     }

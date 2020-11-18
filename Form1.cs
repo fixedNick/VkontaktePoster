@@ -109,5 +109,19 @@ namespace VkontaktePoster
         {
             Account.InitializeRelations();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string name = textBox4.Text;
+            string desc = textBox3.Text;
+            List<string> photos = new List<string>();
+
+            foreach (var ph in listBox3.Items)
+                photos.Add(ph.ToString());
+
+            new Product(name, desc, photos);
+
+            listBox2.Items.Add(name);
+        }
     }
 }
