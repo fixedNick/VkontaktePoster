@@ -24,7 +24,7 @@ namespace VkontaktePoster
         /// <summary>
         /// VKAccount credentials for a login to vk.com
         /// </summary>
-        private VKAccountCredential Credentials;
+        public readonly VKAccountCredential Credentials;
 
         /// <summary>
         /// Method check is current login already in VKAccounts list or not

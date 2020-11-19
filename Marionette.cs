@@ -32,14 +32,49 @@ namespace VkontaktePoster
         /// <summary>
         /// Remove current driver from drivers list and stop it
         /// </summary>
-        public void Exit() { 
-            foreach(var dr in Drivers)
+        public void Exit()
+        {
+            foreach (var dr in Drivers)
             {
-                if (dr == this) 
+                if (dr == this)
                     Drivers.Remove(this);
             }
 
-            driver.StopDriver(); 
+            driver.StopDriver();
+        }
+
+        public AuthResult AuthorizateVkontakte(VKAccountCredential cred)
+        {
+            string emailInboxCss = "#index_email", passInboxCss = "#index_pass";
+            driver.GoToUrl("https://vk.com/", "Добро пожаловать");
+
+            try
+            {
+                driver.KeySend(driver.FindCss(emailInboxCss), cred.Login, allowException: true);
+                driver.KeySend(driver.FindCss(passInboxCss), cred.Password, sendReturnKey: true, allowException: true);
+
+                if (driver.IsURLChangedAfterNavigate() == false)
+                    return AuthResult.BadNavigate;
+                else
+                {
+                    if (driver.GetPageSource().Trim().ToLower().Contains("Не удаётся войти.".Trim().ToLower()))
+                    {
+
+                        return AuthResult.BadCredential;
+                    }
+                }
+            }
+            catch { return AuthResult.ExceptionFound; }
+
+            return AuthResult.OK;
+        }
+
+        public enum AuthResult
+        {
+            OK, 
+            BadCredential,
+            BadNavigate,
+            ExceptionFound
         }
     }
 

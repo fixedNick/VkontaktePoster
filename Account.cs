@@ -65,5 +65,44 @@ namespace VkontaktePoster
                 Account account = new Account(new Marionette(defaultDriverSettings), vkAccounts[z]);
             }
         }
+
+        /// <summary>
+        /// Starts every account's driver.
+        /// TODO: Добавить многопоточный запуск
+        /// </summary>
+        public static void StartDrivers()
+        {
+            for(int i = 0; i < Accounts.Count; i++)
+            {
+                Accounts[i].Start();
+            }
+        }
+
+        private void Start()
+        {
+            marionette.Initialize();
+
+            // Auth VK
+            var authResult = marionette.AuthorizateVkontakte(vkAccount.Credentials);
+            if(authResult != Marionette.AuthResult.OK)
+            {
+                string authMessage = string.Empty;
+                switch(authResult)
+                {
+                    case Marionette.AuthResult.BadCredential:
+                        authMessage = "Неверные данные для выхода в аккаунт";
+                        break;
+                    case Marionette.AuthResult.BadNavigate:
+                        authMessage = "Неудалось авторизоваться в связи с навигацией";
+                        break;
+                    case Marionette.AuthResult.ExceptionFound:
+                        authMessage = "При попытке авторизации получено исключение";
+                        break;
+                }
+                Notification.ShowNotification($"Неудалось авторизоваться в аккаунте: {vkAccount.Credentials.Login}. Причина: {authMessage}");
+                StopAccount();
+                return;
+            }
+        }
     }
 }
