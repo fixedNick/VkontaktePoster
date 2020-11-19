@@ -17,7 +17,7 @@ namespace VkontaktePoster
         /// <summary>
         /// Product which posting by this VKAccount
         /// </summary>
-        private Product Product = null;
+        public Product Product { get; private set; }
 
         private Timestamp Timestamp = new Timestamp();
 

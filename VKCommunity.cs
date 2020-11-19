@@ -8,8 +8,17 @@ namespace VkontaktePoster
 {
     class VKCommunity
     {
-        private static List<VKCommunity> Communities = new List<VKCommunity>();
+        public enum CommunityType
+        { 
+            None,
+            Suggest,
+            Closed,
+            Free
+        }
+
+        public readonly static List<VKCommunity> Communities = new List<VKCommunity>();
         public string Address = "";
+        public CommunityType Type = CommunityType.None;
 
         /// <summary>
         /// Time of repeat post to current community

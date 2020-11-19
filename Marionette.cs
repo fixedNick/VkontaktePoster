@@ -43,6 +43,21 @@ namespace VkontaktePoster
             driver.StopDriver();
         }
 
+        /// <summary>
+        /// Results of authentication
+        /// OK - All is fine
+        /// BadCredentials - Cannot login by this credentials
+        /// BadNavigate - Driver didnt navigated from vk.com to vk.com/feed
+        /// ExceptionFound - Driver got an exception
+        /// </summary>
+        public enum AuthResult
+        {
+            OK,
+            BadCredential,
+            BadNavigate,
+            ExceptionFound
+        }
+
         public AuthResult AuthorizateVkontakte(VKAccountCredential cred)
         {
             string emailInboxCss = "#index_email", passInboxCss = "#index_pass";
@@ -69,12 +84,24 @@ namespace VkontaktePoster
             return AuthResult.OK;
         }
 
-        public enum AuthResult
+        public Boolean StartPosting(Product product)
         {
-            OK, 
-            BadCredential,
-            BadNavigate,
-            ExceptionFound
+            for(int groupIndex = 0; groupIndex < VKCommunity.Communities.Count; groupIndex++)
+            {
+                driver.GoToUrl(VKCommunity.Communities[groupIndex].Address);
+                if(driver.IsURLChangedAfterNavigate() == false)
+                {
+                    Notification.ShowNotification($"Неудалось перейти к группе {VKCommunity.Communities[groupIndex].Address}");
+                    continue;
+                }
+
+
+            }
+        }
+
+        public bool MakePost(Product product)
+        {
+
         }
     }
 

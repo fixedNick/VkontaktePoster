@@ -81,13 +81,18 @@ namespace VkontaktePoster
         private void Start()
         {
             marionette.Initialize();
+            if(Authentication() == false) return;
+            StartPosting();
+        }
 
+        private bool Authentication()
+        {
             // Auth VK
             var authResult = marionette.AuthorizateVkontakte(vkAccount.Credentials);
-            if(authResult != Marionette.AuthResult.OK)
+            if (authResult != Marionette.AuthResult.OK)
             {
                 string authMessage = string.Empty;
-                switch(authResult)
+                switch (authResult)
                 {
                     case Marionette.AuthResult.BadCredential:
                         authMessage = "Неверные данные для выхода в аккаунт";
@@ -101,8 +106,11 @@ namespace VkontaktePoster
                 }
                 Notification.ShowNotification($"Неудалось авторизоваться в аккаунте: {vkAccount.Credentials.Login}. Причина: {authMessage}");
                 StopAccount();
-                return;
+                return false;
             }
+
+            return true;
         }
+        private bool StartPosting() => marionette.StartPosting(vkAccount.Product);
     }
 }
