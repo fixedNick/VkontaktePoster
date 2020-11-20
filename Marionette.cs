@@ -88,21 +88,63 @@ namespace VkontaktePoster
         {
             for(int groupIndex = 0; groupIndex < VKCommunity.Communities.Count; groupIndex++)
             {
-                driver.GoToUrl(VKCommunity.Communities[groupIndex].Address);
+                var currentCommunity = VKCommunity.Communities[groupIndex];
+
+                driver.GoToUrl(currentCommunity.Address);
                 if(driver.IsURLChangedAfterNavigate() == false)
                 {
-                    Notification.ShowNotification($"Неудалось перейти к группе {VKCommunity.Communities[groupIndex].Address}");
+                    Notification.ShowNotification($"Неудалось перейти к группе {currentCommunity.Address}");
                     continue;
                 }
 
-
+                if (currentCommunity.Type == VKCommunity.CommunityType.None)
+                    currentCommunity.Type = GetCommunityType();
             }
         }
 
-        public bool MakePost(Product product)
+        private VKCommunity.CommunityType GetCommunityType()
         {
+            // .group_closed_text - Закрытая группа
+            // Если есть #join_button - то еще не подали заявку
+            // Если нет, то значит подали
+            // Если нет #join_button - проверяем наличие #group_wall, если есть - мы в группе, если нет - мы не в группе
+            // TODO: Узнать, что будет, если нас приняли в комьюнити
+            // #public_subscribe - Предложка
+            // #join_button - Открытая
+            if(driver.FindCss("#join_button", isNullAcceptable: true) != null)
+            {
+                // Это открытая группа
+                return VKCommunity.CommunityType.Free;
+            }
+            else if(driver.FindCss("#public_subscribe", isNullAcceptable: true) != null)
+            {
+                // Это паблик группа
+                return VKCommunity.CommunityType.Suggest;
+            }
+            else if(driver.FindCss(".group_closed_text", isNullAcceptable: true) != null)
+            {
+                // Закрытая группа
+                if(driver.FindCss("#join_button", isNullAcceptable: true) != null)
+                {
+                    // Заявка в группу не подана
+                    // Подаем заявку
+                    return VKCommunity.CommunityType.ClosedWaiting;
+                }
+                
+                if(driver.FindCss("#group_wall", isNullAcceptable: true) != null)
+                {
+                    // Мы вступили в данную группу
+                    return VKCommunity.CommunityType.ClosedJoined;
+                }
+            }
 
+            // Неудалось определить тип группы
+            return VKCommunity.CommunityType.Unknown;
         }
+
+        //public bool MakePost(Product product)
+        //{
+        //}
     }
 
     /// <summary>

@@ -12,8 +12,10 @@ namespace VkontaktePoster
         { 
             None,
             Suggest,
-            Closed,
-            Free
+            ClosedWaiting,
+            ClosedJoined,
+            Free, 
+            Unknown
         }
 
         public readonly static List<VKCommunity> Communities = new List<VKCommunity>();
