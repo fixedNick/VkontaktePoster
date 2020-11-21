@@ -204,7 +204,11 @@ namespace VkontaktePoster
         {
             for(int i = 0; i < message.Length; i++)
             {
-                if (message[i] == '\\' && message[i] == 'n') driver.KeySend(target, "", sendReturnKey: true);
+                if (message[i] == '\\' && message[i + 1] == 'n')
+                {
+                    driver.KeySend(target, "", sendReturnKey: true);
+                    i += 2;
+                }
                 else driver.KeySend(target, message[i].ToString());
             }
         }
