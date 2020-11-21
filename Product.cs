@@ -50,6 +50,7 @@ namespace VkontaktePoster
         {
             Name = name;
             Description = descr;
+            Price = price;
             if (photosList != null) 
                 photos = photosList;
 
