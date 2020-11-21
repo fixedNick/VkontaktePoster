@@ -115,12 +115,18 @@ namespace VkontaktePoster
         {
             string name = textBox4.Text;
             string desc = textBox3.Text;
+            if(Int32.TryParse(textBox9.Text, out int price) == false)
+            {
+                Notification.ShowNotification("Неверно указана цена товара.");
+                return;
+            }
+
             List<string> photos = new List<string>();
 
             foreach (var ph in listBox3.Items)
                 photos.Add(ph.ToString());
 
-            new Product(name, desc, photos);
+            new Product(name, price, desc, photos);
 
             listBox2.Items.Add(name);
         }
