@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SeleniumDriver;
@@ -106,6 +107,11 @@ namespace VkontaktePoster
         }
 
         private void button8_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(StartAccountsThread);
+        }
+
+        private void StartAccountsThread(object obj)
         {
             Account.InitializeRelations();
             Account.StartDrivers();
