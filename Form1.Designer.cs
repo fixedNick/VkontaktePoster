@@ -180,6 +180,7 @@ namespace VkontaktePoster
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(142, 28);
             this.textBox2.TabIndex = 10;
+            this.textBox2.Text = "ghjcnjnfR1997pRo";
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
@@ -200,6 +201,7 @@ namespace VkontaktePoster
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(142, 28);
             this.textBox1.TabIndex = 8;
+            this.textBox1.Text = "+79992092376";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
@@ -255,6 +257,7 @@ namespace VkontaktePoster
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(142, 28);
             this.textBox9.TabIndex = 28;
+            this.textBox9.Text = "900";
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button6
@@ -271,6 +274,10 @@ namespace VkontaktePoster
             // listBox3
             // 
             this.listBox3.FormattingEnabled = true;
+            this.listBox3.Items.AddRange(new object[] {
+            "C:\\Users\\user\\Downloads\\moto3.jpg",
+            "C:\\Users\\user\\Downloads\\moto2.jpg",
+            "C:\\Users\\user\\Downloads\\moto1.jpg"});
             this.listBox3.Location = new System.Drawing.Point(15, 286);
             this.listBox3.Name = "listBox3";
             this.listBox3.Size = new System.Drawing.Size(253, 56);
@@ -347,6 +354,8 @@ namespace VkontaktePoster
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox3.Size = new System.Drawing.Size(253, 91);
             this.textBox3.TabIndex = 18;
+            this.textBox3.Text = "Тестовое описание\\nПереход на новую строку\r\nПопытка перейти еще раз без явного оп" +
+    "ределения";
             // 
             // label5
             // 
@@ -366,6 +375,7 @@ namespace VkontaktePoster
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(142, 28);
             this.textBox4.TabIndex = 16;
+            this.textBox4.Text = "Тестовое название";
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
