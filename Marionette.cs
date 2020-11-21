@@ -174,16 +174,18 @@ namespace VkontaktePoster
                 Notification.ShowNotification("Не удалось найти элемент для выбора фотографий");
                 return;
             }
-            var photoInput = driver.FindCss("#choose_photo_upload", isNullAcceptable: true);
-            if(photoInput == null)
-            {
-                Notification.ShowNotification("Не удалось найти элемент для отправки фотографий");
-                return;
-            }
             
             foreach(var ph in product.Photos)
             {
                 driver.Click(uploadPhotoButton);
+
+                var photoInput = driver.FindCss("#choose_photo_upload", isNullAcceptable: true);
+                if (photoInput == null)
+                {
+                    Notification.ShowNotification("Не удалось найти элемент для отправки фотографий");
+                    return;
+                }
+
                 driver.KeySend(photoInput, ph);
             }
 
