@@ -1,4 +1,4 @@
-﻿namespace VkontaktePoster
+namespace VkontaktePoster
 {
     partial class Form1
     {
@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.button8 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -52,6 +54,8 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBox8 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.listBox5 = new System.Windows.Forms.ListBox();
             this.button10 = new System.Windows.Forms.Button();
@@ -65,16 +69,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.button8 = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBox9 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -89,6 +91,28 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(520, 449);
             this.tabControl1.TabIndex = 2;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.button8);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(512, 423);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Основное";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button8.Location = new System.Drawing.Point(9, 6);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(120, 38);
+            this.button8.TabIndex = 13;
+            this.button8.Text = "Старт";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // tabPage1
             // 
@@ -191,6 +215,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label14);
+            this.tabPage2.Controls.Add(this.textBox9);
             this.tabPage2.Controls.Add(this.button6);
             this.tabPage2.Controls.Add(this.listBox3);
             this.tabPage2.Controls.Add(this.button5);
@@ -214,7 +240,7 @@
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button6.Location = new System.Drawing.Point(126, 326);
+            this.button6.Location = new System.Drawing.Point(126, 348);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(142, 28);
             this.button6.TabIndex = 27;
@@ -224,7 +250,7 @@
             // listBox3
             // 
             this.listBox3.FormattingEnabled = true;
-            this.listBox3.Location = new System.Drawing.Point(15, 264);
+            this.listBox3.Location = new System.Drawing.Point(15, 286);
             this.listBox3.Name = "listBox3";
             this.listBox3.Size = new System.Drawing.Size(253, 56);
             this.listBox3.TabIndex = 26;
@@ -232,7 +258,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button5.Location = new System.Drawing.Point(126, 229);
+            this.button5.Location = new System.Drawing.Point(126, 251);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(142, 28);
             this.button5.TabIndex = 25;
@@ -243,7 +269,7 @@
             // 
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label7.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(15, 229);
+            this.label7.Location = new System.Drawing.Point(15, 251);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(105, 28);
             this.label7.TabIndex = 24;
@@ -271,7 +297,7 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button4.Location = new System.Drawing.Point(15, 365);
+            this.button4.Location = new System.Drawing.Point(15, 387);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(146, 32);
             this.button4.TabIndex = 20;
@@ -283,7 +309,7 @@
             // 
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(15, 101);
+            this.label4.Location = new System.Drawing.Point(15, 123);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(253, 28);
             this.label4.TabIndex = 19;
@@ -293,7 +319,7 @@
             // textBox3
             // 
             this.textBox3.Font = new System.Drawing.Font("Sitka Display", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(15, 132);
+            this.textBox3.Location = new System.Drawing.Point(15, 154);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -304,7 +330,7 @@
             // 
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label5.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(15, 67);
+            this.label5.Location = new System.Drawing.Point(15, 62);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(105, 28);
             this.label5.TabIndex = 17;
@@ -314,7 +340,7 @@
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Sitka Display", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(126, 67);
+            this.textBox4.Location = new System.Drawing.Point(126, 62);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(142, 28);
             this.textBox4.TabIndex = 16;
@@ -348,6 +374,27 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Сообщества";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label13.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(15, 104);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(174, 28);
+            this.label13.TabIndex = 37;
+            this.label13.Text = "Время повторного поста (сек)";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Font = new System.Drawing.Font("Sitka Display", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox8.Location = new System.Drawing.Point(195, 104);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(73, 28);
+            this.textBox8.TabIndex = 36;
+            this.textBox8.Text = "14400";
+            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button9
             // 
@@ -489,48 +536,25 @@
             this.label12.Text = "Временные отметки";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label13
+            // label14
             // 
-            this.label13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label13.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label13.Location = new System.Drawing.Point(15, 104);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(174, 28);
-            this.label13.TabIndex = 37;
-            this.label13.Text = "Время повторного поста (сек)";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label14.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label14.Location = new System.Drawing.Point(15, 93);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(105, 28);
+            this.label14.TabIndex = 29;
+            this.label14.Text = "Цена";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBox8
+            // textBox9
             // 
-            this.textBox8.Font = new System.Drawing.Font("Sitka Display", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox8.Location = new System.Drawing.Point(195, 104);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(73, 28);
-            this.textBox8.TabIndex = 36;
-            this.textBox8.Text = "14400";
-            this.textBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.button8);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(512, 423);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Основное";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button8.Location = new System.Drawing.Point(9, 6);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(120, 38);
-            this.button8.TabIndex = 13;
-            this.button8.Text = "Старт";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.textBox9.Font = new System.Drawing.Font("Sitka Display", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox9.Location = new System.Drawing.Point(126, 93);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(142, 28);
+            this.textBox9.TabIndex = 28;
+            this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 
@@ -542,6 +566,7 @@
             this.Text = "VkontaktePoster";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -550,7 +575,6 @@
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -598,6 +622,8 @@
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBox9;
     }
 }
 
