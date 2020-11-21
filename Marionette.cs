@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using SeleniumDriver;
@@ -153,13 +154,62 @@ namespace VkontaktePoster
             if (joinButton == null) 
                 return false;
 
-            driver.KeySend(joinButton, OpenQA.Selenium.Keys.Return);
+            driver.Click(joinButton);
             return true;
         }
 
-        public void MakePost(Product product)
+        private void MakePost(Product product)
         {
+            var postField = driver.FindCss("#post_field", isNullAcceptable: true);
+            if(postField == null)
+            {
+                Notification.ShowNotification($"Не удалось найти поле для ввода информации о продукте. {product.Name}");
+                return;
+            }
 
+            WriteMessageLetterByLetter(product.Name, postField); driver.KeySend(postField, "", sendReturnKey: true);
+            WriteMessageLetterByLetter(product.Description, postField); driver.KeySend(postField, "", sendReturnKey: true);
+            WriteMessageLetterByLetter($"Цена: {product.Price} рублей", postField);
+
+            // sending photos
+            
+            var uploadPhotoButton = driver.FindCss(".ms_item.ms_item_photo._type_photo", isNullAcceptable: true);
+            if(uploadPhotoButton == null)
+            {
+                Notification.ShowNotification("Не удалось найти элемент для выбора фотографий");
+                return;
+            }
+            var photoInput = driver.FindCss("#choose_photo_upload", isNullAcceptable: true);
+            if(photoInput == null)
+            {
+                Notification.ShowNotification("Не удалось найти элемент для отправки фотографий");
+                return;
+            }
+            
+            foreach(var ph in product.Photos)
+            {
+                driver.Click(uploadPhotoButton);
+                driver.KeySend(photoInput, ph);
+            }
+
+            // Waiting for load images
+            int loadImagesWaitCircles = 3;
+            while (driver.FindCss(".page_attach_progress_wrap", isNullAcceptable: true) != null && --loadImagesWaitCircles >= 0) 
+                Thread.Sleep(750);
+        }
+
+        /// <summary>
+        /// Method to fix sending messages into post field and search new lines.
+        /// </summary>
+        /// <param name="message">Message to send</param>
+        /// <param name="target">Post field element (input)</param>
+        private void WriteMessageLetterByLetter(string message, IWebElement target)
+        {
+            for(int i = 0; i < message.Length; i++)
+            {
+                if (message[i] == '\\' && message[i] == 'n') driver.KeySend(target, "", sendReturnKey: true);
+                else driver.KeySend(target, message[i].ToString());
+            }
         }
     }
 
