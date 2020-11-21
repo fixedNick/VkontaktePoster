@@ -10,31 +10,20 @@ namespace VkontaktePoster
     {
         public static readonly List<Product> Products = new List<Product>();
 
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            private set
-            {
-                _name = value;
-            }
-        }
-
-        private string _description;
-        public string Description
-        {
-            get => _description;
-            private set
-            {
-                _description = value;
-            }
-        }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public int Price { get; private set; }
 
         /// <summary>
-        /// Methods to work with photos list.
+        /// Using photos everywhere inside class.
+        /// Using Photos to get read-only collection from other classes
         /// </summary>
-        private List<string> photos;
-        public List<string> GetPhotos() => photos;
+        private List<string> photos = new List<string>();
+        public IReadOnlyList<string> Photos
+        {
+            get => photos.AsReadOnly();
+            private set => photos = new List<string>(value);
+        }
         public void AddPhoto(string photoPath)
         {
             foreach(var ph in photos)
@@ -57,11 +46,12 @@ namespace VkontaktePoster
             }
         }
 
-        public Product(string name, string descr = "", List<string> photosList = null)
+        public Product(string name, int price, string descr = "", List<string> photosList = null)
         {
             Name = name;
             Description = descr;
-            photos = photosList == null ? new List<string>() : photosList;
+            if (photosList != null) 
+                photos = photosList;
 
             Products.Add(this);
         }
