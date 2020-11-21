@@ -135,11 +135,21 @@ namespace VkontaktePoster
             new Product(name, price, desc, photos);
 
             listBox2.Items.Add(name);
+
+            listBox3.Items.Clear();
+            textBox3.Clear();
+            textBox4.Clear();
+            textBox9.Clear();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                Filter = "Image Files(*.BMP;*.JPG;*.GIF;*JPEG)|*.BMP;*.JPG;*.GIF;*.JPEG",
+                Multiselect = true
+            };
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 var files = dialog.FileNames;
