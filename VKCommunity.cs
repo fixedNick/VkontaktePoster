@@ -27,7 +27,7 @@ namespace VkontaktePoster
             get => _type;
             set
             {
-                if (_type != CommunityType.None || _type != CommunityType.ClosedWaiting)
+                if (_type != CommunityType.None && _type != CommunityType.ClosedWaiting)
                     throw new Exception("Попытка переопределить тип группы, когда тип уже установлен");
                 _type = value;
             }
