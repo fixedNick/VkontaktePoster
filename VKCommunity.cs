@@ -9,18 +9,29 @@ namespace VkontaktePoster
     class VKCommunity
     {
         public enum CommunityType
-        { 
+        {
             None,
             Suggest,
             ClosedWaiting,
             ClosedJoined,
-            Free, 
+            Free,
             Unknown
         }
 
         public readonly static List<VKCommunity> Communities = new List<VKCommunity>();
         public string Address = "";
-        public CommunityType Type = CommunityType.None;
+
+        private CommunityType _type = CommunityType.None;
+        public CommunityType Type
+        {
+            get => _type;
+            set
+            {
+                if (_type != CommunityType.None || _type != CommunityType.ClosedWaiting)
+                    throw new Exception("Попытка переопределить тип группы, когда тип уже установлен");
+                _type = value;
+            }
+        }
 
         /// <summary>
         /// Time of repeat post to current community
@@ -47,9 +58,9 @@ namespace VkontaktePoster
         /// <returns>TRUE if community has been added and FALSE if community already exists in main list</returns>
         public static bool AddCommunity(string address)
         {
-            foreach(var com in Communities)
+            foreach (var com in Communities)
             {
-                if (com.Address.Equals(address)) 
+                if (com.Address.Equals(address))
                     return false;
             }
 
@@ -57,16 +68,16 @@ namespace VkontaktePoster
             Communities.Add(community);
             return true;
         }
-       
+
         /// <summary>
         /// Delete community from main list
         /// </summary>
         /// <param name="address">Community URL</param>
         public static void DeleteCommunity(string address)
         {
-            foreach(var com in Communities)
+            foreach (var com in Communities)
             {
-                if(com.Address.Equals(address))
+                if (com.Address.Equals(address))
                 {
                     Communities.Remove(com);
                     break;

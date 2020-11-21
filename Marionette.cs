@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
 using SeleniumDriver;
 
 namespace VkontaktePoster
@@ -84,7 +85,7 @@ namespace VkontaktePoster
             return AuthResult.OK;
         }
 
-        public Boolean StartPosting(Product product)
+        public void StartPosting(Product product)
         {
             for(int groupIndex = 0; groupIndex < VKCommunity.Communities.Count; groupIndex++)
             {
@@ -93,58 +94,73 @@ namespace VkontaktePoster
                 driver.GoToUrl(currentCommunity.Address);
                 if(driver.IsURLChangedAfterNavigate() == false)
                 {
-                    Notification.ShowNotification($"Неудалось перейти к группе {currentCommunity.Address}");
+                    Notification.ShowNotification($"Не удалось перейти к группе {currentCommunity.Address}");
                     continue;
                 }
 
                 if (currentCommunity.Type == VKCommunity.CommunityType.None)
+                {
                     currentCommunity.Type = GetCommunityType();
+                    if (currentCommunity.Type != VKCommunity.CommunityType.ClosedJoined)
+                    {
+                        if (JoinCommunity(currentCommunity.Type) == false)
+                        {
+                            Notification.ShowNotification($"Не удалось вступить в группу {currentCommunity.Address} | Тип группы: {currentCommunity.Type}");
+                            continue;
+                        }
+                    }
+                }
+
+                MakePost(product);
             }
         }
 
         private VKCommunity.CommunityType GetCommunityType()
         {
-            // .group_closed_text - Закрытая группа
-            // Если есть #join_button - то еще не подали заявку
-            // Если нет, то значит подали
-            // Если нет #join_button - проверяем наличие #group_wall, если есть - мы в группе, если нет - мы не в группе
-            // TODO: Узнать, что будет, если нас приняли в комьюнити
-            // #public_subscribe - Предложка
-            // #join_button - Открытая
             if(driver.FindCss("#join_button", isNullAcceptable: true) != null)
-            {
-                // Это открытая группа
-                return VKCommunity.CommunityType.Free;
-            }
+                return VKCommunity.CommunityType.Free; // Free community
             else if(driver.FindCss("#public_subscribe", isNullAcceptable: true) != null)
-            {
-                // Это паблик группа
-                return VKCommunity.CommunityType.Suggest;
-            }
+                return VKCommunity.CommunityType.Suggest; // Public community
             else if(driver.FindCss(".group_closed_text", isNullAcceptable: true) != null)
             {
                 // Закрытая группа
                 if(driver.FindCss("#join_button", isNullAcceptable: true) != null)
-                {
-                    // Заявка в группу не подана
-                    // Подаем заявку
-                    return VKCommunity.CommunityType.ClosedWaiting;
-                }
-                
+                    return VKCommunity.CommunityType.ClosedWaiting; // Request didnt send // We have to send request
                 if(driver.FindCss("#group_wall", isNullAcceptable: true) != null)
-                {
-                    // Мы вступили в данную группу
-                    return VKCommunity.CommunityType.ClosedJoined;
-                }
+                    return VKCommunity.CommunityType.ClosedJoined; // We joined current community
             }
 
-            // Неудалось определить тип группы
+            // Не удалось определить тип группы
             return VKCommunity.CommunityType.Unknown;
         }
 
-        //public bool MakePost(Product product)
-        //{
-        //}
+        /// <summary>
+        /// This method provides account join into community
+        /// </summary>
+        /// <param name="communityType">Type of the community</param>
+        /// <returns>
+        /// TRUE - Account joined
+        /// FALSE - Account couldn't join community
+        /// </returns>
+        private bool JoinCommunity(VKCommunity.CommunityType communityType)
+        {
+            IWebElement joinButton = null;
+            if (communityType == VKCommunity.CommunityType.Suggest)
+                joinButton = driver.FindCss("#public_subscribe", isNullAcceptable: true);
+            else
+                joinButton = driver.FindCss("#join_button", isNullAcceptable: true);
+
+            if (joinButton == null) 
+                return false;
+
+            driver.KeySend(joinButton, OpenQA.Selenium.Keys.Return);
+            return true;
+        }
+
+        public void MakePost(Product product)
+        {
+
+        }
     }
 
     /// <summary>
