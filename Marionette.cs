@@ -93,11 +93,6 @@ namespace VkontaktePoster
                 var currentCommunity = VKCommunity.Communities[groupIndex];
 
                 driver.GoToUrl(currentCommunity.Address);
-                if(driver.IsURLChangedAfterNavigate() == false)
-                {
-                    Notification.ShowNotification($"Не удалось перейти к группе {currentCommunity.Address}");
-                    continue;
-                }
 
                 if (currentCommunity.Type == VKCommunity.CommunityType.None)
                 {
