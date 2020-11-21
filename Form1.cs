@@ -136,5 +136,41 @@ namespace VkontaktePoster
 
             listBox2.Items.Add(name);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var files = dialog.FileNames;
+
+                foreach (var photoToAdd in files)
+                {
+                    bool photoExists = false;
+                    foreach (var addedphoto in listBox3.Items)
+                    {
+                        if (addedphoto.ToString().Trim().ToLower().Equals(photoToAdd.ToLower().Trim()))
+                        {
+                            photoExists = true;
+                            break;
+                        }
+                    }
+
+                    if (photoExists) continue;
+                    listBox3.Items.Add(photoToAdd);
+                }
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if(listBox3.SelectedIndex == -1)
+            {
+                Notification.ShowNotification("Для удаления выберите фото в списке");
+                return;
+            }
+
+            listBox3.Items.RemoveAt(listBox3.SelectedIndex);
+        }
     }
 }

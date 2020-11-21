@@ -266,6 +266,7 @@ namespace VkontaktePoster
             this.button6.TabIndex = 27;
             this.button6.Text = "Удалить фото";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // listBox3
             // 
@@ -284,6 +285,7 @@ namespace VkontaktePoster
             this.button5.TabIndex = 25;
             this.button5.Text = "Добавить фото";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label7
             // 
