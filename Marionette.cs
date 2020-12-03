@@ -29,6 +29,7 @@ namespace VkontaktePoster
         public void Initialize()
         {
             driver = new Driver(settings.SeleniumDriverType, settings.DriverNotificationDelegate, settings.StartMaximized, settings.Headless, settings.HidePrompt, settings.ShowExceiptions, settings.DriverFileName);
+            
         }
 
         /// <summary>
@@ -113,16 +114,16 @@ namespace VkontaktePoster
 
         private VKCommunity.CommunityType GetCommunityType()
         {
-            if(driver.FindCss("#join_button", isNullAcceptable: true) != null)
+            if(driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
                 return VKCommunity.CommunityType.Free; // Free community
-            else if(driver.FindCss("#public_subscribe", isNullAcceptable: true) != null)
+            else if(driver.FindCss("#public_subscribe", isNullAcceptable: true, useFastSearch: true) != null)
                 return VKCommunity.CommunityType.Suggest; // Public community
-            else if(driver.FindCss(".group_closed_text", isNullAcceptable: true) != null)
+            else if(driver.FindCss(".group_closed_text", isNullAcceptable: true, useFastSearch: true) != null)
             {
                 // Закрытая группа
-                if(driver.FindCss("#join_button", isNullAcceptable: true) != null)
+                if(driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
                     return VKCommunity.CommunityType.ClosedWaiting; // Request didnt send // We have to send request
-                if(driver.FindCss("#group_wall", isNullAcceptable: true) != null)
+                if(driver.FindCss("#group_wall", isNullAcceptable: true, useFastSearch: true) != null)
                     return VKCommunity.CommunityType.ClosedJoined; // We joined current community
             }
 
@@ -140,6 +141,7 @@ namespace VkontaktePoster
         /// </returns>
         private bool JoinCommunity(VKCommunity.CommunityType communityType)
         {
+            driver.GoToUrl(driver.GetCurrentUrl());
             IWebElement joinButton = null;
             if (communityType == VKCommunity.CommunityType.Suggest)
                 joinButton = driver.FindCss("#public_subscribe", isNullAcceptable: true);
@@ -167,31 +169,30 @@ namespace VkontaktePoster
             WriteMessageLetterByLetter($"Цена: {product.Price} рублей", postField);
 
             // sending photos
-            
-            var uploadPhotoButton = driver.FindCss(".ms_item.ms_item_photo._type_photo", isNullAcceptable: true);
-            if(uploadPhotoButton == null)
-            {
-                Notification.ShowNotification("Не удалось найти элемент для выбора фотографий");
-                return;
-            }
-            
-            foreach(var ph in product.Photos)
-            {
-                driver.Click(uploadPhotoButton);
 
-                var photoInput = driver.FindCss("#choose_photo_upload", isNullAcceptable: true);
-                if (photoInput == null)
+            int i = product.Photos.Count;
+            while (--i >= 0)
+            {
+                var icon = driver.NativeFindCss(".ms_item.ms_item_photo._type_photo");
+                if (icon!= null)
                 {
-                    Notification.ShowNotification("Не удалось найти элемент для отправки фотографий");
-                    return;
-                }
+                    icon.Click();
+                    Thread.Sleep(1500);
 
-                driver.KeySend(photoInput, ph);
+                    var input = driver.NativeFindCss("#choose_photo_upload");
+                    if (input != null)
+                    {
+                        input.SendKeys(product.Photos[i]);
+                        Thread.Sleep(1500);
+                    }
+                    else Notification.ShowNotification("Не удалось найти инпут для загрузки фотографии.");
+                }
+                else Notification.ShowNotification("Не удалось найти инконку для отправки фотографии.");
             }
 
             // Waiting for load images
             int loadImagesWaitCircles = 3;
-            while (driver.FindCss(".page_attach_progress_wrap", isNullAcceptable: true) != null && --loadImagesWaitCircles >= 0) 
+            while (driver.FindCss(".page_attach_progress_wrap", isNullAcceptable: true, refreshPage: false) != null && --loadImagesWaitCircles >= 0) 
                 Thread.Sleep(750);
         }
 
@@ -207,7 +208,7 @@ namespace VkontaktePoster
                 if (message[i] == '\\' && message[i + 1] == 'n')
                 {
                     driver.KeySend(target, "", sendReturnKey: true);
-                    i += 2;
+                    i++;
                 }
                 else driver.KeySend(target, message[i].ToString());
             }
