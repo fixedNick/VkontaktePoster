@@ -476,6 +476,7 @@ namespace VkontaktePoster
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(142, 28);
             this.textBox6.TabIndex = 29;
+            this.textBox6.Text = "https://vk.com/vape_baraholka_piter";
             this.textBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label11

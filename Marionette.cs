@@ -29,7 +29,7 @@ namespace VkontaktePoster
         public void Initialize()
         {
             driver = new Driver(settings.SeleniumDriverType, settings.DriverNotificationDelegate, settings.StartMaximized, settings.Headless, settings.HidePrompt, settings.ShowExceiptions, settings.DriverFileName);
-            
+            driver.advertiseData = new AdvertiseData(".box_layout", ".box_title", ".box_x_button", new List<string>() { "Take care of your account's security" }, true);
         }
 
         /// <summary>
@@ -170,24 +170,15 @@ namespace VkontaktePoster
 
             // sending photos
 
-            int i = product.Photos.Count;
-            while (--i >= 0)
-            {
-                var icon = driver.NativeFindCss(".ms_item.ms_item_photo._type_photo");
-                if (icon!= null)
-                {
-                    icon.Click();
-                    Thread.Sleep(1500);
+            var photoIcon = driver.FindCss("#page_add_media > div.media_selector.clear_fix > a.ms_item.ms_item_photo._type_photo");
 
-                    var input = driver.NativeFindCss("#choose_photo_upload");
-                    if (input != null)
-                    {
-                        input.SendKeys(product.Photos[i]);
-                        Thread.Sleep(1500);
-                    }
-                    else Notification.ShowNotification("Не удалось найти инпут для загрузки фотографии.");
-                }
-                else Notification.ShowNotification("Не удалось найти инконку для отправки фотографии.");
+            foreach(var photo in product.Photos)
+            {
+                driver.Click(photoIcon, true);
+                Thread.Sleep(1250);
+
+                driver.KeySend(driver.FindCss("#choose_photo_upload"), photo, allowException: true);
+                Thread.Sleep(1250);
             }
 
             // Waiting for load images
