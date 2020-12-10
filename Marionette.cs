@@ -97,10 +97,11 @@ namespace VkontaktePoster
 
                 if (currentCommunity.Type == VKCommunity.CommunityType.None)
                 {
-                    currentCommunity.Type = GetCommunityType();
-                    if (currentCommunity.Type != VKCommunity.CommunityType.ClosedJoined)
+                    currentCommunity.Type = GetCommunityType(); // Updating community type of the group
+                    new Controller<VKCommunity>().UpdateSingleItem(currentCommunity); // Save new information of group
+                    if (currentCommunity.Type != VKCommunity.CommunityType.ClosedJoined) // If group type isnt closed that we had joined then joining group
                     {
-                        if (JoinCommunity(currentCommunity.Type) == false)
+                        if (JoinCommunity(currentCommunity.Type) == false) // Trying to join group
                         {
                             Notification.ShowNotification($"Не удалось вступить в группу {currentCommunity.Address} | Тип группы: {currentCommunity.Type}");
                             continue;
