@@ -3,11 +3,11 @@ using System.IO;
 
 namespace VkontaktePoster
 {
-    class Controller<T> : IController<T>
+    class IOController<T> 
     {
-        private string CommunitiesDirectory = "communities";
+        private static string CommunitiesDirectory = "communities";
 
-        public void UpdateSingleItem(T item)
+        public static void UpdateSingleItem(T item)
         {
             string path = string.Empty, name = string.Empty;
             string directoryPath = "";
