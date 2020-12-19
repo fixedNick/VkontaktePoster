@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +68,20 @@ namespace VkontaktePoster
                 Photos = photosList;
 
             Products.Add(this);
+        }
+
+        public static void DeleteProduct(int id)
+        {
+            foreach(var prod in Products)
+            {
+                if (prod.ProductID.Equals(id))
+                {
+                    VKAccount.RemoveProductFromAccounts(id);
+                    Products.Remove(prod);
+                    IOController.DeleteFile(prod);
+                    break;
+                }
+            }
         }
     }
 }

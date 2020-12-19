@@ -58,6 +58,8 @@ namespace VkontaktePoster
             return true;
         }
 
+        public static bool AddAccount(VKAccount acc) => AddAccount(acc.Credentials.Login, acc.Credentials.Password);
+
         /// <summary>
         /// Deleting vk account from the list of all accounts
         /// </summary>
@@ -69,8 +71,18 @@ namespace VkontaktePoster
                 if(acc.Credentials.Login.Equals(login))
                 {
                     VKAccounts.Remove(acc);
+                    IOController.DeleteFile(acc);
                     break;
                 }
+            }
+        }
+
+        public static void RemoveProductFromAccounts(int id)
+        {
+            foreach(var acc in VKAccounts)
+            {
+                if (acc.Product.ProductID.Equals(id))
+                    acc.ClearProducts();
             }
         }
 
@@ -92,6 +104,7 @@ namespace VkontaktePoster
             if (Product != null) return false;
 
             Product = product;
+            IOController.UpdateSingleItem(this);
             return true;
         }
 

@@ -28,6 +28,9 @@ namespace VkontaktePoster
 
             foreach (var com in VKCommunity.Communities)
                 listBox5.Items.Add(com.Address);
+
+            foreach (var prod in Product.Products)
+                listBox2.Items.Add($"[{prod.ProductID}] {prod.Name} [{prod.Price} rub]");
         }
 
         /// <summary>
@@ -50,7 +53,8 @@ namespace VkontaktePoster
             listBox1.Items.Add(vkLogin);
             textBox1.Clear();
             textBox2.Clear();
-            // TODO: Добавить сохранение аккаунта в файл бд.
+
+            IOController.UpdateSingleItem(new VKAccount(vkLogin, vkPassword));
         }
 
         /// <summary>
@@ -140,7 +144,7 @@ namespace VkontaktePoster
 
             var prod = new Product(name, price, desc, photos);
 
-            listBox2.Items.Add(name);
+            listBox2.Items.Add($"[{prod.ProductID}] {name} [{price} rub]");
 
             listBox3.Items.Clear();
             textBox3.Clear();
@@ -195,6 +199,19 @@ namespace VkontaktePoster
         {
             if(Int32.TryParse(textBox7.Text, out int res)) Timestamp.CURRENT_LIMIT_PER_DAY = res;
             if (Int32.TryParse(textBox5.Text, out res)) Timestamp.CURRENT_REPEAT_TIME = res;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedIndex == -1)
+            {
+                Notification.ShowNotification("Выберите продукт для удаления");
+                return;
+            }
+
+            var id = Convert.ToInt32(listBox2.Items[listBox2.SelectedIndex].ToString().Split(']')[0].Split('[')[1]);
+            Product.DeleteProduct(id);
+            listBox2.Items.Remove(listBox2.Items[listBox2.SelectedIndex]);
         }
     }
 }

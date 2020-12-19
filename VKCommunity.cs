@@ -108,6 +108,7 @@ namespace VkontaktePoster
                 if (com.Address.Equals(address))
                 {
                     Communities.Remove(com);
+                    IOController.DeleteFile(com);
                     break;
                 }
             }
