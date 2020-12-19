@@ -8,8 +8,8 @@ namespace VkontaktePoster
 {
     class Timestamp
     {
-        private const int DEFAULT_REPEAT_TIME = 3600 * 4;
-        private const int DEFAULT_LIMIT_PER_DAY = 4;
+        public static readonly int DEFAULT_REPEAT_TIME = 3600 * 4;
+        public static readonly int DEFAULT_LIMIT_PER_DAY = 4;
 
         public TimeSpan TIME_BETWEEN_REPEAT_POST;
         public int POST_LIMIT_PER_DAY;
