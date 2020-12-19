@@ -21,6 +21,7 @@ namespace VkontaktePoster
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Config.CreateDefaultConfig();
             Notification.SetupNotificationHandler(Notification.ShowMessageBox);
             IOController<VKCommunity>.LoadCommunitiesData();
 
@@ -136,7 +137,7 @@ namespace VkontaktePoster
             foreach (var ph in listBox3.Items)
                 photos.Add(ph.ToString());
 
-            new Product(name, price, desc, photos);
+            var prod = new Product(name, price, desc, photos);
 
             listBox2.Items.Add(name);
 
@@ -144,6 +145,8 @@ namespace VkontaktePoster
             textBox3.Clear();
             textBox4.Clear();
             textBox9.Clear();
+
+            IOController<Product>.UpdateSingleItem(prod);
         }
 
         private void button5_Click(object sender, EventArgs e)
