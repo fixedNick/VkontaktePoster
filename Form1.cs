@@ -219,5 +219,11 @@ namespace VkontaktePoster
             Product.DeleteProduct(id);
             listBox2.Items.Remove(listBox2.Items[listBox2.SelectedIndex]);
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            foreach(var dr in Marionette.Drivers)
+                dr.Exit();
+        }
     }
 }

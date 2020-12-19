@@ -577,6 +577,7 @@ namespace VkontaktePoster
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "VkontaktePoster";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);

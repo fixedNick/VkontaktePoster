@@ -42,7 +42,7 @@ namespace VkontaktePoster
         /// </summary>
         public static void InitializeRelations()
         {
-            var defaultDriverSettings = new DriverSettings(SeleniumDriver.Driver.DriverType.Chrome, Notification.ShowMessageBox, true, false, false, true);
+            var defaultDriverSettings = new DriverSettings(SeleniumDriver.Driver.DriverType.Chrome, Notification.ShowMessageBox, true, false, false, false);
 
             // Connect Products to VKAccounts
             var vkAccounts = VKAccount.GetAccounts();

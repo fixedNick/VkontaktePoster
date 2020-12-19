@@ -92,6 +92,8 @@ namespace VkontaktePoster
             for(int groupIndex = 0; groupIndex < VKCommunity.Communities.Count; groupIndex++)
             {
                 var currentCommunity = VKCommunity.Communities[groupIndex];
+                if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
+                    continue;
 
                 driver.GoToUrl(currentCommunity.Address);
 
@@ -108,14 +110,10 @@ namespace VkontaktePoster
                         }
                     }
                 }
-                // TODO:
-                // и не исчерпан днейвной лимит, то делаем пост
-                if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address))
-                {
-                    MakePost(account.Product);
-                    Timestamp.PostMade(account, currentCommunity.Address);
-                    IOController.UpdateSingleItem(account);
-                }
+
+                MakePost(account.Product);
+                Timestamp.PostMade(account, currentCommunity.Address);
+                IOController.UpdateSingleItem(account);
             }
         }
 
