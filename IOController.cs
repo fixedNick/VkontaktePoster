@@ -37,36 +37,6 @@ namespace VkontaktePoster
             }
         }
 
-        //public static void LoadCommunitiesData()
-        //{
-        //    if (Directory.Exists(CommunitiesDirectory) == false) return;
-        //    var files = Directory.GetFiles(CommunitiesDirectory);
-
-        //    foreach (var file in files)
-        //    {
-        //        using (StreamReader sr = new StreamReader($"{file}"))
-        //        {
-        //            VKCommunity community = JsonConvert.DeserializeObject<VKCommunity>(sr.ReadToEnd());
-        //            VKCommunity.AddCommunity(community.Address, community.Type, community.RepeatTime, community.LimitPerDay);
-        //        }
-        //    }
-        //}
-
-        //public static void LoadProductsData<T>()
-        //{
-        //    if (Directory.Exists(ProductsDirectory) == false) return;
-        //    var files = Directory.GetFiles(ProductsDirectory);
-
-        //    foreach (var file in files)
-        //    {
-        //        using (StreamReader sr = new StreamReader($"{file}"))
-        //        {
-        //            Product product = JsonConvert.DeserializeObject<Product>(sr.ReadToEnd());
-        //            Product.Products.Add(product);
-        //        }
-        //    }
-        //}
-
         public static void LoadData<T>()
         {
             string directoryPath = string.Empty;
