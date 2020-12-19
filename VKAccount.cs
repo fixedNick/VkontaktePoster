@@ -15,6 +15,7 @@ namespace VkontaktePoster
         public static IReadOnlyList<VKAccount> GetAccounts() => VKAccounts.AsReadOnly();
 
         public Dictionary<string, DateTime> PostedTime = new Dictionary<string, DateTime>();
+        public Dictionary<string, KeyValuePair<DateTime, int>> PostedTimesToday = new Dictionary<string, KeyValuePair<DateTime, int>>();
 
         /// <summary>
         /// Product which posting by this VKAccount
@@ -44,12 +45,13 @@ namespace VkontaktePoster
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public VKAccount(VKAccountCredential credentials, Product product, Dictionary<string, DateTime> postedTime, Timestamp times)
+        public VKAccount(VKAccountCredential credentials, Product product, Dictionary<string, DateTime> postedTime, Timestamp times, Dictionary<string, KeyValuePair<DateTime, int>> postedTimesToday)
         {
             Credentials = credentials;
             Product = product;
             PostedTime = postedTime;
             Times = times;
+            PostedTimesToday = postedTimesToday;
         }
 
         public VKAccount(string login, string password) => Credentials = new VKAccountCredential(login, password);

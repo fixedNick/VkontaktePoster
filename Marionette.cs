@@ -95,6 +95,10 @@ namespace VkontaktePoster
                 if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
                     continue;
 
+                if (Timestamp.IsPostLimitReached(account, currentCommunity.Address) == true)
+                    continue;
+                else account.PostedTimesToday[currentCommunity.Address] = new KeyValuePair<DateTime, int>(DateTime.Now, account.PostedTimesToday[currentCommunity.Address].Value + 1);
+
                 driver.GoToUrl(currentCommunity.Address);
 
                 if (currentCommunity.Type == VKCommunity.CommunityType.None)

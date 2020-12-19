@@ -51,6 +51,26 @@ namespace VkontaktePoster
             return true;
         }
 
+        public static bool IsPostLimitReached(VKAccount acc, string address)
+        {
+            if(acc.PostedTimesToday.ContainsKey(address))
+            {
+                if(acc.PostedTimesToday[address].Key.Date.Equals(DateTime.Now.Date))
+                {
+                    if (acc.PostedTimesToday[address].Value >= acc.Times.POST_LIMIT_PER_DAY)
+                        return true;
+                    else
+                        return false;
+                }
+
+                acc.PostedTimesToday[address] = new KeyValuePair<DateTime, int>(DateTime.Now, 0);
+                return false;
+            }
+            
+            acc.PostedTimesToday.Add(address, new KeyValuePair<DateTime, int>(DateTime.Now, 0));
+            return false;
+        }
+
         /// <summary>
         /// Обновляет информацию о дате последнего поста в группе address для VKAccount
         /// </summary>

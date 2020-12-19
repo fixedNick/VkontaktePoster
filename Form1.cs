@@ -205,6 +205,9 @@ namespace VkontaktePoster
         {
             if(Int32.TryParse(textBox7.Text, out int res)) Timestamp.CURRENT_LIMIT_PER_DAY = res;
             if (Int32.TryParse(textBox5.Text, out res)) Timestamp.CURRENT_REPEAT_TIME = res;
+
+            foreach(var acc in VKAccount.GetAccounts())
+                acc.Times = new Timestamp(TimeSpan.FromSeconds(Timestamp.CURRENT_REPEAT_TIME), Timestamp.CURRENT_LIMIT_PER_DAY);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -223,6 +226,12 @@ namespace VkontaktePoster
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             foreach(var dr in Marionette.Drivers)
+                dr.Exit();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            foreach (var dr in Marionette.Drivers)
                 dr.Exit();
         }
     }
