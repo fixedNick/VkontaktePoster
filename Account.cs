@@ -111,6 +111,6 @@ namespace VkontaktePoster
 
             return true;
         }
-        private void StartPosting() => marionette.StartPosting(vkAccount.Product);
+        private void StartPosting() => marionette.StartPosting(vkAccount);
     }
 }

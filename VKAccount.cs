@@ -14,12 +14,14 @@ namespace VkontaktePoster
         private static List<VKAccount> VKAccounts = new List<VKAccount>();
         public static IReadOnlyList<VKAccount> GetAccounts() => VKAccounts.AsReadOnly();
 
+        public Dictionary<string, DateTime> PostedTime = new Dictionary<string, DateTime>();
+
         /// <summary>
         /// Product which posting by this VKAccount
         /// </summary>
         public Product Product { get; private set; }
 
-        private Timestamp Timestamp = Timestamp.DefaultTimestamp;
+        public Timestamp Times = Timestamp.DefaultTimestamp;
 
         /// <summary>
         /// VKAccount credentials for a login to vk.com
@@ -33,7 +35,7 @@ namespace VkontaktePoster
         /// <returns>Returns TRUE if login is free and FALSE if login already exists</returns>
         private static bool IsLoginValid(string login)
         {
-            foreach(var acc in VKAccounts)
+            foreach (var acc in VKAccounts)
             {
                 if (acc.Credentials.Login.ToLower().Trim().Equals(login.ToLower().Trim()))
                     return false;
@@ -42,10 +44,12 @@ namespace VkontaktePoster
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public VKAccount(VKAccountCredential credentials, Product product)
+        public VKAccount(VKAccountCredential credentials, Product product, Dictionary<string, DateTime> postedTime, Timestamp times)
         {
             Credentials = credentials;
             Product = product;
+            PostedTime = postedTime;
+            Times = times;
         }
 
         public VKAccount(string login, string password) => Credentials = new VKAccountCredential(login, password);
@@ -65,7 +69,12 @@ namespace VkontaktePoster
             return true;
         }
 
-        public static bool AddAccount(VKAccount acc) => AddAccount(acc.Credentials.Login, acc.Credentials.Password);
+        public static bool AddAccount(VKAccount acc)
+        {
+            if (IsLoginValid(acc.Credentials.Login) == false) return false;
+            VKAccounts.Add(acc);
+            return true;
+        }
 
         /// <summary>
         /// Deleting vk account from the list of all accounts
@@ -73,9 +82,9 @@ namespace VkontaktePoster
         /// <param name="login">login of vk account</param>
         public static void DeleteAccount(string login)
         {
-            foreach(var acc in VKAccounts)
+            foreach (var acc in VKAccounts)
             {
-                if(acc.Credentials.Login.Equals(login))
+                if (acc.Credentials.Login.Equals(login))
                 {
                     VKAccounts.Remove(acc);
                     IOController.DeleteFile(acc);
@@ -86,7 +95,7 @@ namespace VkontaktePoster
 
         public static void RemoveProductFromAccounts(int id)
         {
-            foreach(var acc in VKAccounts)
+            foreach (var acc in VKAccounts)
             {
                 if (acc.Product.ProductID.Equals(id))
                     acc.ClearProducts();
@@ -120,10 +129,13 @@ namespace VkontaktePoster
             if (Product == null) return false;
             return true;
         }
+
+
     }
 
-    struct VKAccountCredential {
-    
+    struct VKAccountCredential
+    {
+
         public readonly string Login;
         public readonly string Password;
 

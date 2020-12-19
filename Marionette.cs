@@ -87,7 +87,7 @@ namespace VkontaktePoster
             return AuthResult.OK;
         }
 
-        public void StartPosting(Product product)
+        public void StartPosting(VKAccount account)
         {
             for(int groupIndex = 0; groupIndex < VKCommunity.Communities.Count; groupIndex++)
             {
@@ -108,8 +108,14 @@ namespace VkontaktePoster
                         }
                     }
                 }
-
-                MakePost(product);
+                // TODO:
+                // и не исчерпан днейвной лимит, то делаем пост
+                if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address))
+                {
+                    MakePost(account.Product);
+                    Timestamp.PostMade(account, currentCommunity.Address);
+                    IOController.UpdateSingleItem(account);
+                }
             }
         }
 
