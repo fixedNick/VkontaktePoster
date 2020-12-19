@@ -186,5 +186,11 @@ namespace VkontaktePoster
 
             listBox3.Items.RemoveAt(listBox3.SelectedIndex);
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if(Int32.TryParse(textBox7.Text, out int res)) Timestamp.CURRENT_LIMIT_PER_DAY = res;
+            if (Int32.TryParse(textBox5.Text, out res)) Timestamp.CURRENT_REPEAT_TIME = res;
+        }
     }
 }

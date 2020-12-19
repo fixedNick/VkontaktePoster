@@ -513,6 +513,7 @@ namespace VkontaktePoster
             this.button7.TabIndex = 17;
             this.button7.Text = "Применить";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // label8
             // 
