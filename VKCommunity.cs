@@ -85,6 +85,17 @@ namespace VkontaktePoster
             Communities.Add(community);
             return true;
         }
+        public static bool AddCommunity(VKCommunity community)
+        {
+            foreach(var com in Communities)
+            {
+                if (com.Address.Equals(community.Address))
+                    return false;
+            }
+
+            Communities.Add(community);
+            return true;
+        }
 
         /// <summary>
         /// Delete community from main list

@@ -39,10 +39,8 @@ namespace VkontaktePoster
 
         public static void LoadCommunitiesData()
         {
-            string directoryPath = "communities";
-            if (Directory.Exists(directoryPath) == false) return;
-
-            var files = Directory.GetFiles(directoryPath);
+            if (Directory.Exists(CommunitiesDirectory) == false) return;
+            var files = Directory.GetFiles(CommunitiesDirectory);
 
             foreach (var file in files)
             {
