@@ -8,6 +8,7 @@ namespace VkontaktePoster
 {
     class Product
     {
+        public readonly int ProductID;
         public static readonly List<Product> Products = new List<Product>();
 
         public string Name { get; private set; }
@@ -48,6 +49,9 @@ namespace VkontaktePoster
 
         public Product(string name, int price, string descr = "", List<string> photosList = null)
         {
+            ProductID = Convert.ToInt32(Config.GetConfigProperty("NextProductID"));
+            Config.SetConfigProperty("NextProductID", (ProductID + 1).ToString());
+
             Name = name;
             Description = descr;
             Price = price;
