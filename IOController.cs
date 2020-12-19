@@ -42,7 +42,7 @@ namespace VkontaktePoster
                 using (StreamReader sr = new StreamReader($"{file}"))
                 {
                     VKCommunity community = JsonConvert.DeserializeObject<VKCommunity>(sr.ReadToEnd());
-                    VKCommunity.AddCommunity(community.Address, community.Type, community.RepeatTime);
+                    VKCommunity.AddCommunity(community.Address, community.Type, community.RepeatTime, community.LimitPerDay);
                 }
             }
         }

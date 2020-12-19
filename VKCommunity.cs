@@ -44,22 +44,27 @@ namespace VkontaktePoster
             private set { _repeatTime = value; }
         }
 
+        public int LimitPerDay { get; private set; }
+
 
         [JsonConstructor]
-        public VKCommunity(string address, int type, int repeatTime)
+        public VKCommunity(string address, int type, int repeatTime, int limitPerDay)
         {
             Address = address;
             RepeatTime = repeatTime;
             Type = (CommunityType) type;
+            LimitPerDay = limitPerDay;
         }
 
-        public VKCommunity(string address) : this(address, CommunityType.None, Timestamp.DEFAULT_REPEAT_TIME) { }
-        public VKCommunity(string address, int repeatTime) : this(address, CommunityType.None, repeatTime) { }
-        public VKCommunity(string address, CommunityType type, int repeatTime)
+        public VKCommunity(string address) : this(address, CommunityType.None, Timestamp.CURRENT_REPEAT_TIME, Timestamp.CURRENT_LIMIT_PER_DAY) { }
+        public VKCommunity(string address, int repeatTime) : this(address, CommunityType.None, repeatTime, Timestamp.CURRENT_LIMIT_PER_DAY) { }
+        public VKCommunity(string address, int repeatTime, int limitPerDay) : this(address, CommunityType.None, repeatTime, limitPerDay) { }
+        public VKCommunity(string address, CommunityType type, int repeatTime, int limitPerDay)
         {
             Address = address;
             RepeatTime = repeatTime;
             Type = type;
+            LimitPerDay = limitPerDay;
         }
 
         /// <summary>
@@ -67,8 +72,8 @@ namespace VkontaktePoster
         /// </summary>
         /// <param name="address">Community URL</param>
         /// <returns>TRUE if community has been added and FALSE if community already exists in main list</returns>
-        public static bool AddCommunity(string address) => AddCommunity(address, CommunityType.None, Timestamp.DEFAULT_REPEAT_TIME);
-        public static bool AddCommunity(string address, CommunityType type, int repeatTime)
+        public static bool AddCommunity(string address) => AddCommunity(address, CommunityType.None, Timestamp.CURRENT_REPEAT_TIME, Timestamp.CURRENT_LIMIT_PER_DAY);
+        public static bool AddCommunity(string address, CommunityType type, int repeatTime, int limitPerDay)
         {
             foreach (var com in Communities)
             {
@@ -76,7 +81,7 @@ namespace VkontaktePoster
                     return false;
             }
 
-            VKCommunity community = new VKCommunity(address, type, repeatTime);
+            VKCommunity community = new VKCommunity(address, type, repeatTime, limitPerDay);
             Communities.Add(community);
             return true;
         }
