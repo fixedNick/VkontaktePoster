@@ -49,7 +49,7 @@ namespace VkontaktePoster
 
         public Product(string name, int price, string descr = "", List<string> photosList = null)
         {
-            ProductID = Convert.ToInt32(Config.GetConfigProperty("NextProductID"));
+            if (int.TryParse(Config.GetConfigProperty("NextProductID"), out ProductID) == false) throw new Exception("Не удалось получить значение следующего ID продукта из конфига");
             Config.SetConfigProperty("NextProductID", (ProductID + 1).ToString());
 
             Name = name;
