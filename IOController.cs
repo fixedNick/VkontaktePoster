@@ -29,5 +29,22 @@ namespace VkontaktePoster
                 sw.WriteAsync(jsonOutput);
             }
         }
+
+        public static void LoadCommunitiesData()
+        {
+            string directoryPath = "communities";
+            if (Directory.Exists(directoryPath) == false) return;
+
+            var files = Directory.GetFiles(directoryPath);
+
+            foreach (var file in files)
+            {
+                using (StreamReader sr = new StreamReader($"{directoryPath}/{file}"))
+                {
+                    VKCommunity community = JsonConvert.DeserializeObject<VKCommunity>(sr.ReadToEnd());
+                    VKCommunity.AddCommunity(community.Address, community.Type, community.RepeatTime);
+                }
+            }
+        }
     }
 }
