@@ -98,7 +98,7 @@ namespace VkontaktePoster
                 if (currentCommunity.Type == VKCommunity.CommunityType.None)
                 {
                     currentCommunity.Type = GetCommunityType(); // Updating community type of the group
-                    IOController<VKCommunity>.UpdateSingleItem(currentCommunity); // Save new information of group
+                    IOController.UpdateSingleItem(currentCommunity); // Save new information of group
                     if (currentCommunity.Type != VKCommunity.CommunityType.ClosedJoined) // If group type isnt closed that we had joined then joining group
                     {
                         if (JoinCommunity(currentCommunity.Type) == false) // Trying to join group

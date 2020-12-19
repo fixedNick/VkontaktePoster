@@ -23,7 +23,8 @@ namespace VkontaktePoster
         {
             Config.CreateDefaultConfig();
             Notification.SetupNotificationHandler(Notification.ShowMessageBox);
-            IOController<VKCommunity>.LoadCommunitiesData();
+            IOController.LoadData<VKCommunity>();
+            IOController.LoadData<Product>();
 
             foreach (var com in VKCommunity.Communities)
                 listBox5.Items.Add(com.Address);
@@ -146,7 +147,7 @@ namespace VkontaktePoster
             textBox4.Clear();
             textBox9.Clear();
 
-            IOController<Product>.UpdateSingleItem(prod);
+            IOController.UpdateSingleItem(prod);
         }
 
         private void button5_Click(object sender, EventArgs e)
