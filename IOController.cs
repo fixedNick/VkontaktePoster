@@ -6,6 +6,7 @@ namespace VkontaktePoster
     class IOController<T> 
     {
         private static string CommunitiesDirectory = "communities";
+        private static string ProductsDirectory = "products";
 
         public static void UpdateSingleItem(T item)
         {
@@ -19,6 +20,12 @@ namespace VkontaktePoster
                 path = CommunitiesDirectory + "/" + name + ".txt";
                 directoryPath = CommunitiesDirectory;
             }
+            else if(item.GetType().Equals(typeof(Product)))
+            {
+                name = (item as Product).ProductID.ToString();
+                path = $"{ProductsDirectory}/{name}.txt";
+                directoryPath = ProductsDirectory;
+            }
 
             if (Directory.Exists(directoryPath) == false) Directory.CreateDirectory(directoryPath);
 
@@ -26,7 +33,7 @@ namespace VkontaktePoster
             string jsonOutput = JsonConvert.SerializeObject(item, Formatting.Indented);
             using (StreamWriter sw = new StreamWriter(path, false))
             {
-                sw.WriteAsync(jsonOutput);
+                sw.Write(jsonOutput);
             }
         }
 
