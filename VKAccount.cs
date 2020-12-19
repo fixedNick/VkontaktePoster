@@ -19,7 +19,7 @@ namespace VkontaktePoster
         /// </summary>
         public Product Product { get; private set; }
 
-        private Timestamp Timestamp = new Timestamp();
+        private Timestamp Timestamp = Timestamp.DefaultTimestamp;
 
         /// <summary>
         /// VKAccount credentials for a login to vk.com
@@ -39,6 +39,13 @@ namespace VkontaktePoster
                     return false;
             }
             return true;
+        }
+
+        [Newtonsoft.Json.JsonConstructor]
+        public VKAccount(VKAccountCredential credentials, Product product)
+        {
+            Credentials = credentials;
+            Product = product;
         }
 
         public VKAccount(string login, string password) => Credentials = new VKAccountCredential(login, password);

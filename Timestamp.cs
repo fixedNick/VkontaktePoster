@@ -17,6 +17,8 @@ namespace VkontaktePoster
         public TimeSpan TIME_BETWEEN_REPEAT_POST;
         public int POST_LIMIT_PER_DAY;
 
+        public static Timestamp DefaultTimestamp = new Timestamp(TimeSpan.FromSeconds(DEFAULT_REPEAT_TIME), DEFAULT_LIMIT_PER_DAY);
+
         public Timestamp()
         {
             TIME_BETWEEN_REPEAT_POST = TimeSpan.FromSeconds(DEFAULT_REPEAT_TIME);

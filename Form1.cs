@@ -25,12 +25,18 @@ namespace VkontaktePoster
             Notification.SetupNotificationHandler(Notification.ShowMessageBox);
             IOController.LoadData<VKCommunity>();
             IOController.LoadData<Product>();
+            IOController.LoadData<VKAccount>();
 
             foreach (var com in VKCommunity.Communities)
                 listBox5.Items.Add(com.Address);
 
             foreach (var prod in Product.Products)
                 listBox2.Items.Add($"[{prod.ProductID}] {prod.Name} [{prod.Price} rub]");
+
+            foreach (var acc in VKAccount.GetAccounts())
+            {
+                listBox1.Items.Add(acc.Credentials.Login);
+            }
         }
 
         /// <summary>
