@@ -44,11 +44,13 @@ namespace VkontaktePoster
         }
 
 
-        public VKCommunity(string address) => Address = address;
-        public VKCommunity(string address, int repeatTime)
+        public VKCommunity(string address) : this(address, 0, CommunityType.None) { }
+        public VKCommunity(string address, int repeatTime) : this(address, repeatTime, CommunityType.None) { }
+        public VKCommunity(string address, int repeatTime, CommunityType type)
         {
             Address = address;
             RepeatTime = repeatTime;
+            Type = type;
         }
 
         /// <summary>
@@ -56,7 +58,8 @@ namespace VkontaktePoster
         /// </summary>
         /// <param name="address">Community URL</param>
         /// <returns>TRUE if community has been added and FALSE if community already exists in main list</returns>
-        public static bool AddCommunity(string address)
+        public static bool AddCommunity(string address) => AddCommunity(address, CommunityType.None, 0);
+        public static bool AddCommunity(string address, CommunityType type, int repeatTime)
         {
             foreach (var com in Communities)
             {
@@ -64,7 +67,7 @@ namespace VkontaktePoster
                     return false;
             }
 
-            VKCommunity community = new VKCommunity(address);
+            VKCommunity community = new VKCommunity(address, repeatTime, type);
             Communities.Add(community);
             return true;
         }
