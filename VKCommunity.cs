@@ -83,6 +83,7 @@ namespace VkontaktePoster
 
             VKCommunity community = new VKCommunity(address, type, repeatTime, limitPerDay);
             Communities.Add(community);
+            IOController.UpdateSingleItem(community);
             return true;
         }
         public static bool AddCommunity(VKCommunity community)
@@ -94,6 +95,7 @@ namespace VkontaktePoster
             }
 
             Communities.Add(community);
+            IOController.UpdateSingleItem(community);
             return true;
         }
 

@@ -15,6 +15,7 @@ namespace VkontaktePoster
 
         private DriverSettings settings;
         private Driver driver;
+        public static Boolean StopPostingClicked = false;
 
         public Marionette(DriverSettings driverSettings)
         {
@@ -89,7 +90,7 @@ namespace VkontaktePoster
 
         public void StartPosting(VKAccount account)
         {
-            for(int groupIndex = 0; groupIndex < VKCommunity.Communities.Count; groupIndex++)
+            for (int groupIndex = 0; groupIndex < VKCommunity.Communities.Count && StopPostingClicked == false; groupIndex++)
             {
                 var currentCommunity = VKCommunity.Communities[groupIndex];
                 if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
@@ -119,6 +120,9 @@ namespace VkontaktePoster
                 Timestamp.PostMade(account, currentCommunity.Address);
                 IOController.UpdateSingleItem(account);
             }
+
+            if (StopPostingClicked == false) StartPosting(account);
+            else Exit();
         }
 
         private VKCommunity.CommunityType GetCommunityType()
@@ -194,6 +198,12 @@ namespace VkontaktePoster
             int loadImagesWaitCircles = 3;
             while (driver.FindCss(".page_attach_progress_wrap", isNullAcceptable: true, refreshPage: false) != null && --loadImagesWaitCircles >= 0) 
                 Thread.Sleep(750);
+
+
+            // CLICK MAKE POST BUTTON
+            var sendPostBtn = driver.FindCss("#send_post", isNullAcceptable: true, refreshPage: false);
+            if (sendPostBtn != null)
+                driver.Click(sendPostBtn);
         }
 
         /// <summary>

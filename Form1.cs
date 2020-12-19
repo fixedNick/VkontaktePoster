@@ -68,7 +68,7 @@ namespace VkontaktePoster
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex == -1)
+            if (listBox1.SelectedIndex == -1)
             {
                 Notification.ShowNotification("Для удаления аккаунта из списка - выберите его");
                 return;
@@ -76,8 +76,8 @@ namespace VkontaktePoster
 
             string vkLogin = listBox1.Items[listBox1.SelectedIndex].ToString();
             VKAccount.DeleteAccount(vkLogin);
-            
-            
+
+
             listBox1.Items.RemoveAt(listBox1.SelectedIndex);
             // TODO: Добавить удаление аккаунта из файла бд.
         }
@@ -88,14 +88,14 @@ namespace VkontaktePoster
         private void button10_Click(object sender, EventArgs e)
         {
             string communityURL = textBox6.Text;
-            if(communityURL.Contains('.') == false)
+            if (communityURL.Contains('.') == false)
             {
                 Notification.ShowNotification("Неверный формат ссылки.");
                 textBox6.Clear();
                 return;
             }
 
-            if(VKCommunity.AddCommunity(communityURL) == false)
+            if (VKCommunity.AddCommunity(communityURL) == false)
             {
                 Notification.ShowNotification("Данное сообщество уже есть в списке");
                 textBox6.Clear();
@@ -112,7 +112,7 @@ namespace VkontaktePoster
         /// </summary>
         private void button9_Click(object sender, EventArgs e)
         {
-            if(listBox5.SelectedIndex == -1)
+            if (listBox5.SelectedIndex == -1)
             {
                 Notification.ShowNotification("Для удаления сообщества - выберите его в списке");
                 return;
@@ -137,7 +137,7 @@ namespace VkontaktePoster
         {
             string name = textBox4.Text;
             string desc = textBox3.Text;
-            if(Int32.TryParse(textBox9.Text, out int price) == false)
+            if (Int32.TryParse(textBox9.Text, out int price) == false)
             {
                 Notification.ShowNotification("Неверно указана цена товара.");
                 return;
@@ -192,7 +192,7 @@ namespace VkontaktePoster
 
         private void button6_Click(object sender, EventArgs e)
         {
-            if(listBox3.SelectedIndex == -1)
+            if (listBox3.SelectedIndex == -1)
             {
                 Notification.ShowNotification("Для удаления выберите фото в списке");
                 return;
@@ -203,10 +203,10 @@ namespace VkontaktePoster
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if(Int32.TryParse(textBox7.Text, out int res)) Timestamp.CURRENT_LIMIT_PER_DAY = res;
+            if (Int32.TryParse(textBox7.Text, out int res)) Timestamp.CURRENT_LIMIT_PER_DAY = res;
             if (Int32.TryParse(textBox5.Text, out res)) Timestamp.CURRENT_REPEAT_TIME = res;
 
-            foreach(var acc in VKAccount.GetAccounts())
+            foreach (var acc in VKAccount.GetAccounts())
                 acc.Times = new Timestamp(TimeSpan.FromSeconds(Timestamp.CURRENT_REPEAT_TIME), Timestamp.CURRENT_LIMIT_PER_DAY);
         }
 
@@ -225,7 +225,7 @@ namespace VkontaktePoster
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            foreach(var dr in Marionette.Drivers)
+            foreach (var dr in Marionette.Drivers)
                 dr.Exit();
         }
 
@@ -233,6 +233,26 @@ namespace VkontaktePoster
         {
             foreach (var dr in Marionette.Drivers)
                 dr.Exit();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var file = dialog.FileName;
+                var linesCount = System.IO.File.ReadAllLines(file).Length;
+
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(file))
+                {
+                    for (int i = 0; i < linesCount; i++)
+                    {
+                        var address = sr.ReadLine();
+                        listBox5.Items.Add(address);
+                        VKCommunity.AddCommunity(address);
+                    }
+                }
+            }
         }
     }
 }

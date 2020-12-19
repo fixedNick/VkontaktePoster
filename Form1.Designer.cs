@@ -28,6 +28,7 @@ namespace VkontaktePoster
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.button8 = new System.Windows.Forms.Button();
@@ -71,6 +72,7 @@ namespace VkontaktePoster
             this.label9 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.button11 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -180,7 +182,6 @@ namespace VkontaktePoster
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(142, 28);
             this.textBox2.TabIndex = 10;
-            this.textBox2.Text = "ghjcnjnfR1997pRo";
             this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
@@ -201,7 +202,6 @@ namespace VkontaktePoster
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(142, 28);
             this.textBox1.TabIndex = 8;
-            this.textBox1.Text = "+79992092376";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
@@ -257,7 +257,6 @@ namespace VkontaktePoster
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(142, 28);
             this.textBox9.TabIndex = 28;
-            this.textBox9.Text = "900";
             this.textBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button6
@@ -274,10 +273,6 @@ namespace VkontaktePoster
             // listBox3
             // 
             this.listBox3.FormattingEnabled = true;
-            this.listBox3.Items.AddRange(new object[] {
-            "C:\\Users\\user\\Downloads\\moto3.jpg",
-            "C:\\Users\\user\\Downloads\\moto2.jpg",
-            "C:\\Users\\user\\Downloads\\moto1.jpg"});
             this.listBox3.Location = new System.Drawing.Point(15, 286);
             this.listBox3.Name = "listBox3";
             this.listBox3.Size = new System.Drawing.Size(253, 56);
@@ -348,15 +343,13 @@ namespace VkontaktePoster
             // 
             // textBox3
             // 
-            this.textBox3.Font = new System.Drawing.Font("Sitka Display", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBox3.Location = new System.Drawing.Point(15, 154);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox3.Size = new System.Drawing.Size(253, 91);
             this.textBox3.TabIndex = 18;
-            this.textBox3.Text = "Тестовое описание\\nПереход на новую строку\r\nПопытка перейти еще раз без явного оп" +
-    "ределения";
             // 
             // label5
             // 
@@ -376,7 +369,6 @@ namespace VkontaktePoster
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(142, 28);
             this.textBox4.TabIndex = 16;
-            this.textBox4.Text = "Тестовое название";
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
@@ -392,6 +384,7 @@ namespace VkontaktePoster
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button11);
             this.tabPage3.Controls.Add(this.label13);
             this.tabPage3.Controls.Add(this.textBox8);
             this.tabPage3.Controls.Add(this.button9);
@@ -569,12 +562,24 @@ namespace VkontaktePoster
             this.label12.Text = "Временные отметки";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // button11
+            // 
+            this.button11.Font = new System.Drawing.Font("Sitka Display", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button11.Location = new System.Drawing.Point(15, 179);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(146, 32);
+            this.button11.TabIndex = 38;
+            this.button11.Text = "Импорт из файла";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(518, 448);
             this.Controls.Add(this.tabControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "VkontaktePoster";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -639,5 +644,6 @@ namespace VkontaktePoster
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Button button11;
     }
 }
