@@ -22,6 +22,10 @@ namespace VkontaktePoster
         private void Form1_Load(object sender, EventArgs e)
         {
             Notification.SetupNotificationHandler(Notification.ShowMessageBox);
+            IOController<VKCommunity>.LoadCommunitiesData();
+
+            foreach (var com in VKCommunity.Communities)
+                listBox5.Items.Add(com.Address);
         }
 
         /// <summary>

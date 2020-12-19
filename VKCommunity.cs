@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace VkontaktePoster
 {
     class VKCommunity
     {
-        public enum CommunityType
+        public enum CommunityType : int
         {
             None,
             Suggest,
@@ -44,9 +45,17 @@ namespace VkontaktePoster
         }
 
 
-        public VKCommunity(string address) : this(address, 0, CommunityType.None) { }
-        public VKCommunity(string address, int repeatTime) : this(address, repeatTime, CommunityType.None) { }
-        public VKCommunity(string address, int repeatTime, CommunityType type)
+        [JsonConstructor]
+        public VKCommunity(string address, int type, int repeatTime)
+        {
+            Address = address;
+            RepeatTime = repeatTime;
+            Type = (CommunityType) type;
+        }
+
+        public VKCommunity(string address) : this(address, CommunityType.None, Timestamp.DEFAULT_REPEAT_TIME) { }
+        public VKCommunity(string address, int repeatTime) : this(address, CommunityType.None, repeatTime) { }
+        public VKCommunity(string address, CommunityType type, int repeatTime)
         {
             Address = address;
             RepeatTime = repeatTime;
@@ -58,7 +67,7 @@ namespace VkontaktePoster
         /// </summary>
         /// <param name="address">Community URL</param>
         /// <returns>TRUE if community has been added and FALSE if community already exists in main list</returns>
-        public static bool AddCommunity(string address) => AddCommunity(address, CommunityType.None, 0);
+        public static bool AddCommunity(string address) => AddCommunity(address, CommunityType.None, Timestamp.DEFAULT_REPEAT_TIME);
         public static bool AddCommunity(string address, CommunityType type, int repeatTime)
         {
             foreach (var com in Communities)
@@ -67,7 +76,7 @@ namespace VkontaktePoster
                     return false;
             }
 
-            VKCommunity community = new VKCommunity(address, repeatTime, type);
+            VKCommunity community = new VKCommunity(address, type, repeatTime);
             Communities.Add(community);
             return true;
         }
