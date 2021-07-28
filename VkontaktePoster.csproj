@@ -40,7 +40,7 @@
     </Reference>
     <Reference Include="SeleniumDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SeleniumDriver\bin\Debug\SeleniumDriver.dll</HintPath>
+      <HintPath>..\..\..\..\source\repos\SeleniumDriver\SeleniumDriver\bin\Debug\SeleniumDriver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,12 +55,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SeleniumDriver\bin\Debug\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\..\source\repos\SeleniumDriver\SeleniumDriver\bin\Debug\WebDriver.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="DriverSettings.cs" />
     <Compile Include="IOController.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

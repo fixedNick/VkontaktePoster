@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VkontaktePoster
 {
     static class Config
     {
-        private static string ConfigPath = "config.txt";
-        private static KeyValuePair<string, string>[] DefaultProps =
+        private static readonly string ConfigPath = "config.txt";
+        private static readonly KeyValuePair<string, string>[] DefaultProps =
         {
             new KeyValuePair<string, string>("NextProductID", "0")
         };

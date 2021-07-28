@@ -6,9 +6,9 @@ namespace VkontaktePoster
 {
     class IOController
     {
-        private static string CommunitiesDirectory = "communities";
-        private static string ProductsDirectory = "products";
-        private static string VKAccountsDirectory = "vkAccounts";
+        private static readonly string CommunitiesDirectory = "communities";
+        private static readonly string ProductsDirectory = "products";
+        private static readonly string VKAccountsDirectory = "vkAccounts";
 
         public static void UpdateSingleItem<T>(T item)
         {
