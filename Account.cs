@@ -103,6 +103,9 @@ namespace VkontaktePoster
                     case Marionette.AuthResult.ExceptionFound:
                         authMessage = "При попытке авторизации получено исключение";
                         break;
+                    case Marionette.AuthResult.Blocked:
+                        authMessage = "К сожалению данный аккаунт был заблокирован";
+                        break;
                 }
                 Notification.ShowNotification($"Неудалось авторизоваться в аккаунте: {vkAccount.Credentials.Login}. Причина: {authMessage}");
                 StopAccount();

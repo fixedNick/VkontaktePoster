@@ -58,6 +58,7 @@ namespace VkontaktePoster
             OK,
             BadCredential,
             BadNavigate,
+            Blocked,
             ExceptionFound
         }
 
@@ -76,10 +77,9 @@ namespace VkontaktePoster
                 else
                 {
                     if (driver.GetPageSource().Trim().ToLower().Contains("Не удаётся войти.".Trim().ToLower()))
-                    {
-
                         return AuthResult.BadCredential;
-                    }
+                    else if(driver.GetCurrentUrl().ToLower().Contains("login?act=blocked".ToLower()) == true)
+                        return AuthResult.Blocked;
                 }
             }
             catch { return AuthResult.ExceptionFound; }
