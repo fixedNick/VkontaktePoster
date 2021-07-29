@@ -10,6 +10,22 @@ namespace VkontaktePoster
         private static readonly string ProductsDirectory = "products";
         private static readonly string VKAccountsDirectory = "vkAccounts";
 
+        public static void WriteLog(string path, string log)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(path, true))
+                {
+                    sw.WriteLine(log);
+                }
+            }
+            catch(System.IO.DirectoryNotFoundException)
+            {
+                System.IO.Directory.CreateDirectory(Logger.LogsDirectory);
+                WriteLog(path, log);
+            }
+        }
+
         public static void UpdateSingleItem<T>(T item)
         {
             string path = string.Empty, name = string.Empty;
