@@ -93,10 +93,29 @@ namespace VkontaktePoster
             {
                 var currentCommunity = VKCommunity.Communities[groupIndex];
                 if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
+                {
+                    var nextPostInMinutes = -1;
+                    try
+                    {
+                        nextPostInMinutes = Timestamp.GetTimeBeforeNextPost(account, currentCommunity.Address).Minutes;
+                    }
+                    catch(TimestampKeysException ex)
+                    {
+                        Logger.Write(this, ex.Message);
+                    }
+                    
+                    string loggerText = $"Аккаунту {account.Credentials.Login} не удалось оставить пост в {currentCommunity.Address}. Причина: Не прошло достаточно времени между постами.";
+                    if (nextPostInMinutes != -1)
+                        loggerText += $" Осталось минут до следующего поста: {nextPostInMinutes}";
+
+                    Logger.Write(this, loggerText);
                     continue;
+                }
 
                 if (Timestamp.IsPostLimitReached(account, currentCommunity.Address) == true)
+                {
                     continue;
+                }
                 else account.PostedTimesToday[currentCommunity.Address] = new KeyValuePair<DateTime, int>(DateTime.Now, account.PostedTimesToday[currentCommunity.Address].Value + 1);
 
                 driver.GoToUrl(currentCommunity.Address);
@@ -120,8 +139,9 @@ namespace VkontaktePoster
                 IOController.UpdateSingleItem(account);
             }
 
-            if (StopPostingClicked == false) StartPosting(account);
-            else Exit();
+            // TODO
+            // тут мы вырубаем драйвер и перекидываем его в режим ожидания
+            Exit();
         }
 
         private VKCommunity.CommunityType GetCommunityType()
