@@ -20,6 +20,20 @@ namespace VkontaktePoster
         public Dictionary<string, DateTime> PostedTime = new Dictionary<string, DateTime>();
         public Dictionary<string, KeyValuePair<DateTime, int>> PostedTimesToday = new Dictionary<string, KeyValuePair<DateTime, int>>();
 
+        // Тип сообщества, используется для быстрого определения типа сообщества драйвером и работы с закрытыми сообществами
+        public enum CommunityType
+        {
+            None,
+            Suggest,
+            ClosedJoined,
+            ClosedWaiting,
+            Free,
+            Unknown
+        }
+
+        // Информация о сообществе, ключ - ссылка на сообщество, значение - какой тип у данного сообщества для данного аккаунта
+        public Dictionary<string, CommunityType> CommunitiesData = new Dictionary<string, CommunityType>();
+
         /// <summary>
         /// Product which posting by this VKAccount
         /// </summary>
@@ -135,6 +149,52 @@ namespace VkontaktePoster
             return true;
         }
 
+        public static void AssociateCommunities()
+        {
+            foreach (var acc in VKAccounts)
+            {
+                foreach (var newCommunity in VKCommunity.Communities)
+                {
+                    if (acc.CommunitiesData.ContainsKey(newCommunity.Address))
+                        continue;
+
+                    try
+                    {
+                        var accountType = GetAccountCommunityTypeSimilarToVKCommunityType(newCommunity.Type);
+                        acc.CommunitiesData.Add(newCommunity.Address, accountType);
+                    }
+                    catch
+                    {
+                        acc.CommunitiesData.Add(newCommunity.Address, CommunityType.ClosedWaiting);
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Метод призван возвращать аналогичный типу VKCommunity.CommunityType объект, но типа VKAccount.CommunityType
+        /// </summary>
+        /// <param name="communityType">Тип сообщества</param>
+        /// <returns>Аналогичный типу VKCommunity.CommunityType тип VKAccount.CommunityType</returns>
+        public static VKAccount.CommunityType GetAccountCommunityTypeSimilarToVKCommunityType(VKCommunity.CommunityType communityType)
+        {
+            switch (communityType)
+            {
+                case VKCommunity.CommunityType.Free:
+                    return VKAccount.CommunityType.Free;
+                case VKCommunity.CommunityType.Suggest:
+                    return VKAccount.CommunityType.Suggest;
+                case VKCommunity.CommunityType.Unknown:
+                    return VKAccount.CommunityType.Unknown;
+                case VKCommunity.CommunityType.ClosedJoined:
+                    return VKAccount.CommunityType.ClosedJoined;
+                case VKCommunity.CommunityType.ClosedWaiting:
+                    return VKAccount.CommunityType.ClosedWaiting;
+                default:
+                    throw new Exception("Не предполагается использование данного метода с типом сообщества" + communityType);
+            }
+        }
 
     }
 
