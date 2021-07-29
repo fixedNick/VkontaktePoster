@@ -9,15 +9,15 @@ namespace VkontaktePoster
     class Logger
     {
 
-        private static readonly string MarionetteLog = ""; 
-        private static readonly string AccountLog = ""; 
-        private static readonly string CommunityLog = ""; 
-        private static readonly string ProductLog = "";
-        private static readonly string OtherLog = "";
+        private static readonly string MarionetteLog = "marionette_log.txt"; 
+        private static readonly string AccountLog = "account_log.txt"; 
+        private static readonly string CommunityLog = "community_log.txt"; 
+        private static readonly string ProductLog = "product_log.txt";
+        private static readonly string OtherLog = "other_log.txt";
 
         public static readonly string LogsDirectory = "logs";
 
-        public void Write(object type, string log)
+        public static void Write(object type, string log)
         {
             string path = string.Empty;
             if(type.GetType().Equals(typeof(Marionette)))
