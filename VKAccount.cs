@@ -14,6 +14,9 @@ namespace VkontaktePoster
         private static List<VKAccount> VKAccounts = new List<VKAccount>();
         public static IReadOnlyList<VKAccount> GetAccounts() => VKAccounts.AsReadOnly();
 
+        // TODO - Оптимизация
+        // Первый Dictionary не имеет смысла, так как его актуальная информация записана во втором Dictionary, в KeyValuePair указывается время последнего поста,
+        // а в int указывается количество постов за день
         public Dictionary<string, DateTime> PostedTime = new Dictionary<string, DateTime>();
         public Dictionary<string, KeyValuePair<DateTime, int>> PostedTimesToday = new Dictionary<string, KeyValuePair<DateTime, int>>();
 

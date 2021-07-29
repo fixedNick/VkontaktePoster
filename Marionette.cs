@@ -94,10 +94,10 @@ namespace VkontaktePoster
                 var currentCommunity = VKCommunity.Communities[groupIndex];
                 if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
                 {
-                    var nextPostInMinutes = -1;
+                    var nextPostInMinutes = TimeSpan.Zero;
                     try
                     {
-                        nextPostInMinutes = Timestamp.GetTimeBeforeNextPost(account, currentCommunity.Address).Minutes;
+                        nextPostInMinutes = Timestamp.GetTimeBeforeNextPost(account, currentCommunity.Address);
                     }
                     catch(TimestampKeysException ex)
                     {
@@ -105,8 +105,8 @@ namespace VkontaktePoster
                     }
                     
                     string loggerText = $"Аккаунту {account.Credentials.Login} не удалось оставить пост в {currentCommunity.Address}. Причина: Не прошло достаточно времени между постами.";
-                    if (nextPostInMinutes != -1)
-                        loggerText += $" Осталось минут до следующего поста: {nextPostInMinutes}";
+                    if (nextPostInMinutes.TotalSeconds > 0)
+                        loggerText += $" Осталось времени до следующего поста: {nextPostInMinutes}";
 
                     Logger.Write(this, loggerText);
                     continue;

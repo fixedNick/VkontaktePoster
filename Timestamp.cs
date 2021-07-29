@@ -96,7 +96,9 @@ namespace VkontaktePoster
             if (account.PostedTime.ContainsKey(communityAddress) == false) 
                 throw new TimestampKeysException($"У аккаунта {account.Credentials.Login} не найден ключ сообщества {communityAddress}");
 
-            var btw = account.PostedTime[communityAddress].Subtract(DateTime.Now).Add(TimeSpan.FromSeconds(VKCommunity.GetCommunity(communityAddress).RepeatTime));
+            /// ВАЖНО
+            /// В данной строчке мы вычитаем время последнего поста из текущего времени и прибавляем ВРЕМЯ МЕЖДУ ПОСТАМИ ДЛЯ АККАУНТА, а не ВРЕМЯ МЕЖДУ ПОСТАМИ ДЛЯ СООБЩЕСТВА
+            var btw = TimeSpan.FromSeconds(account.PostedTime[communityAddress].Subtract(DateTime.Now).TotalSeconds + account.Times.TIME_BETWEEN_REPEAT_POST.TotalSeconds);
             return btw.TotalSeconds <= 0 ? new TimeSpan(0) : btw;
         }
     }
