@@ -92,6 +92,8 @@ namespace VkontaktePoster
             for (int groupIndex = 0; groupIndex < VKCommunity.Communities.Count && StopPostingClicked == false; groupIndex++)
             {
                 var currentCommunity = VKCommunity.Communities[groupIndex];
+
+#region Проверка временных промежутков
                 if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
                 {
                     var nextPostInMinutes = TimeSpan.Zero;
@@ -114,29 +116,69 @@ namespace VkontaktePoster
 
                 if (Timestamp.IsPostLimitReached(account, currentCommunity.Address) == true)
                 {
+                    Logger.Write(this, $"Аккаунту {account.Credentials.Login} не удалось оставить пост в {currentCommunity.Address}. Причина: Достингнут дневной лимит");
                     continue;
                 }
-                else account.PostedTimesToday[currentCommunity.Address] = new KeyValuePair<DateTime, int>(DateTime.Now, account.PostedTimesToday[currentCommunity.Address].Value + 1);
+                else
+                {
+                    account.PostedTimesToday[currentCommunity.Address] = new KeyValuePair<DateTime, int>(DateTime.Now, account.PostedTimesToday[currentCommunity.Address].Value + 1);
+                    IOController.UpdateSingleItem(account);
+                }
+                #endregion
 
                 driver.GoToUrl(currentCommunity.Address);
 
-                if (currentCommunity.Type == VKCommunity.CommunityType.None)
+                if(account.CommunitiesData[currentCommunity.Address] == VKAccount.CommunityType.None)
                 {
-                    currentCommunity.Type = GetCommunityType(); // Updating community type of the group
-                    IOController.UpdateSingleItem(currentCommunity); // Save new information of group
-                    if (currentCommunity.Type != VKCommunity.CommunityType.ClosedJoined) // If group type isnt closed that we had joined then joining group
+                    /// Если тип сообщества определен для VKCommunity и это не Closed, то устанавливаем его аккаунту
+                    /// Иначе проверяем тип сообщества и устанавливаем его аккаунту и сообществу, за исключением Closed типа, при данном типе - мы не переопределяем тип сообщества.
+                    if (currentCommunity.Type != VKCommunity.CommunityType.None && currentCommunity.Type != VKCommunity.CommunityType.Closed)
+                        account.CommunitiesData[currentCommunity.Address] = VKAccount.GetAccountCommunityTypeSimilarToVKCommunityType(currentCommunity.Type);
+                    else
                     {
-                        if (JoinCommunity(currentCommunity.Type) == false) // Trying to join group
+                        var communityType = GetCommunityType();
+                        account.CommunitiesData[currentCommunity.Address] = VKAccount.GetAccountCommunityTypeSimilarToVKCommunityType(communityType);
+                        IOController.UpdateSingleItem(account);
+
+                        if (communityType == VKCommunity.CommunityType.None)
                         {
-                            Notification.ShowNotification($"Не удалось вступить в группу {currentCommunity.Address} | Тип группы: {currentCommunity.Type}");
-                            continue;
+                            currentCommunity.Type = (communityType == VKCommunity.CommunityType.ClosedJoined || communityType == VKCommunity.CommunityType.ClosedWaiting) ? VKCommunity.CommunityType.Closed : communityType;
+                            IOController.UpdateSingleItem(currentCommunity);
                         }
+                    }
+
+                    Logger.Write(this, $"Для аккаунта {account.Credentials.Login} проверен тип сообщества {currentCommunity.Address}. Результат: {account.CommunitiesData[currentCommunity.Address]}");
+                }
+                else if(account.CommunitiesData[currentCommunity.Address] == VKAccount.CommunityType.ClosedWaiting)
+                {
+                    /// Проверяем тип сообщества, не изменился ли он на ClosedJoined
+                    /// Если изменился - устанавливаем новое значение для аккаунта и допускаем его к постингу
+                    /// Если нет - пропускаем итерацию цикла
+                    var communityType = GetCommunityType();
+                    if (communityType == VKCommunity.CommunityType.ClosedJoined)
+                    {
+                        account.CommunitiesData[currentCommunity.Address] = VKAccount.CommunityType.ClosedJoined;
+                        IOController.UpdateSingleItem(account);
+                        Logger.Write(this, $"Аккаунт {account.Credentials.Login} был принят в сообщество {currentCommunity.Address} - тип сообщества для аккаунта изменен.");
+                    }
+                    else
+                    {
+                        Logger.Write(this, $"Аккаунт {account.Credentials.Login} еще не был принят в сообщество {currentCommunity.Address}");
+                        continue;
                     }
                 }
 
+                if(JoinCommunity(account.CommunitiesData[currentCommunity.Address]) == JoinCommunityResult.Error)
+                {
+                    Logger.Write(this, $"Аккаунту {account.Credentials.Login} не удалось вступить в сообщество {currentCommunity.Address}. Тип группы: {currentCommunity.Type}");
+                    continue;
+                }
+
+                Logger.Write(this, $"Аккаунт {account.Credentials.Login} начинает писать пост о продукте {account.Product.Name}");
                 MakePost(account.Product);
                 Timestamp.PostMade(account, currentCommunity.Address);
-                IOController.UpdateSingleItem(account);
+                IOController.UpdateSingleItem(account); // TODO - Проверить, требуется ли это
+                IOController.UpdateSingleItem(currentCommunity); // TODO - Проверить, требуется ли это
             }
 
             // TODO
@@ -144,6 +186,12 @@ namespace VkontaktePoster
             Exit();
         }
 
+        
+
+        /// <summary>
+        /// Метод анализирует стену сообщесто и исходя из этого делает вывод для аккаунта какой тип имеет данное сообщество
+        /// </summary>
+        /// <returns></returns>
         private VKCommunity.CommunityType GetCommunityType()
         {
             if(driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
@@ -162,7 +210,13 @@ namespace VkontaktePoster
             // Не удалось определить тип группы
             return VKCommunity.CommunityType.Unknown;
         }
-
+        
+        private enum JoinCommunityResult
+        {
+            Successfull, 
+            AlreadyJoined,
+            Error
+        }
         /// <summary>
         /// This method provides account join into community
         /// </summary>
@@ -171,20 +225,24 @@ namespace VkontaktePoster
         /// TRUE - Account joined
         /// FALSE - Account couldn't join community
         /// </returns>
-        private bool JoinCommunity(VKCommunity.CommunityType communityType)
+        private JoinCommunityResult JoinCommunity(VKAccount.CommunityType communityType)
         {
             driver.GoToUrl(driver.GetCurrentUrl());
+
+            if (driver.FindCss("#page_actions_btn", isNullAcceptable: true) != null)
+                return JoinCommunityResult.AlreadyJoined;
+
             IWebElement joinButton = null;
-            if (communityType == VKCommunity.CommunityType.Suggest)
+            if (communityType == VKAccount.CommunityType.Suggest)
                 joinButton = driver.FindCss("#public_subscribe", isNullAcceptable: true);
             else
                 joinButton = driver.FindCss("#join_button", isNullAcceptable: true);
 
             if (joinButton == null) 
-                return false;
+                return JoinCommunityResult.Error;
 
             driver.Click(joinButton);
-            return true;
+            return JoinCommunityResult.Successfull;
         }
 
         private void MakePost(Product product)
