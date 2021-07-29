@@ -9,12 +9,14 @@ namespace VkontaktePoster
 {
     class VKCommunity
     {
+        // ClosedWaiting и ClosedJoined используется только для того, чтобы понять, вступил ли аккаунт в закрытое сообщество или нет
         public enum CommunityType : int
         {
             None,
             Suggest,
             ClosedWaiting,
             ClosedJoined,
+            Closed,
             Free,
             Unknown
         }
@@ -28,7 +30,10 @@ namespace VkontaktePoster
             get => _type;
             set
             {
-                if (_type != CommunityType.None && _type != CommunityType.ClosedWaiting)
+                if (value == CommunityType.ClosedWaiting || value == CommunityType.ClosedJoined)
+                    throw new Exception("Тип сообщества нельзя назначить статусным ClosedWaiting | ClosedJoined.");
+
+                if (_type != CommunityType.None)
                     throw new Exception("Попытка переопределить тип группы, когда тип уже установлен");
                 _type = value;
             }
@@ -129,7 +134,7 @@ namespace VkontaktePoster
                     return c;
             }
 
-            throw new Exception("VKCommunity with address " + address + " not found");
+            throw new Exception("VKCommunity с адресом " + address + " не найдено");
         }
     }
 }
