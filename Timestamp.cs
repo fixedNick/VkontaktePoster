@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace VkontaktePoster
         public TimeSpan TIME_BETWEEN_REPEAT_POST;
         public int POST_LIMIT_PER_DAY;
 
-        public static Timestamp DefaultTimestamp = new Timestamp(TimeSpan.FromSeconds(DEFAULT_REPEAT_TIME), DEFAULT_LIMIT_PER_DAY);
+        public static readonly Timestamp DefaultTimestamp = new Timestamp(TimeSpan.FromSeconds(DEFAULT_REPEAT_TIME), DEFAULT_LIMIT_PER_DAY);
 
         public Timestamp()
         {
@@ -76,12 +77,34 @@ namespace VkontaktePoster
         /// </summary>
         /// <param name="account">VKAccount</param>
         /// <param name="address">VKCommunity address</param>
-        internal static void PostMade(VKAccount account, string address)
+        public static void PostMade(VKAccount account, string address)
         {
             if (account.PostedTime.ContainsKey(address))
                 account.PostedTime[address] = DateTime.Now;
             else
                 account.PostedTime.Add(address, DateTime.Now);
+        }
+
+        /// <summary>
+        /// Определяет сколько времени осталось аккаунту до следующего постав в сообществе
+        /// </summary>
+        /// <param name="account">аккаунт</param>
+        /// <param name="communityAddress">адрес сообщество</param>
+        /// <returns>Возвращает 0 секунд, если доступен постинг и N секунд до постинга, если он не доступен.</returns>
+        public static TimeSpan GetTimeBeforeNextPost(VKAccount account, string communityAddress)
+        {
+            if (account.PostedTime.ContainsKey(communityAddress) == false) 
+                throw new TimestampKeysException($"У аккаунта {account.Credentials.Login} не найден ключ сообщества {communityAddress}");
+
+            var btw = account.PostedTime[communityAddress].Subtract(DateTime.Now).Add(TimeSpan.FromSeconds(VKCommunity.GetCommunity(communityAddress).RepeatTime));
+            return btw.TotalSeconds <= 0 ? new TimeSpan(0) : btw;
+        }
+    }
+
+    class TimestampKeysException : Exception
+    {
+        public TimestampKeysException(string message) : base(message)
+        {
         }
     }
 }
