@@ -115,5 +115,21 @@ namespace VkontaktePoster
                 }
             }
         }
+
+        /// <summary>
+        /// Позволяет получить объект сообщества по его адресу
+        /// </summary>
+        /// <param name="address">Адрес сообщества</param>
+        /// <returns>Объект VKCommunity с выбранным address</returns>
+        public static VKCommunity GetCommunity(string address)
+        {
+            foreach(var c in Communities)
+            {
+                if (c.Address.Equals(address))
+                    return c;
+            }
+
+            throw new Exception("VKCommunity with address " + address + " not found");
+        }
     }
 }
