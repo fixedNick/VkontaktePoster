@@ -129,6 +129,7 @@ namespace VkontaktePoster
 
         private void StartAccountsThread(object obj)
         {
+            VKAccount.AssociateCommunities();
             Account.InitializeRelations();
             Account.StartDrivers();
         }
