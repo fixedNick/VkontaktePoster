@@ -20,15 +20,19 @@ namespace VkontaktePoster
         public static void Write(object type, string log)
         {
             string path = string.Empty;
-            if(type.GetType().Equals(typeof(Marionette)))
+            if (type.GetType().Equals(typeof(Marionette)))
                 path = $"{LogsDirectory}/{MarionetteLog}";
-            else if(type.GetType().Equals(typeof(VKAccount)))
+            else if (type.GetType().Equals(typeof(VKAccount)))
                 path = $"{LogsDirectory}/{AccountLog}";
-            else if (type.GetType().Equals(typeof(VKAccount)))
+            else if (type.GetType().Equals(typeof(VKCommunity)))
                 path = $"{LogsDirectory}/{CommunityLog}";
-            else if (type.GetType().Equals(typeof(VKAccount)))
+            else if (type.GetType().Equals(typeof(Product)))
                 path = $"{LogsDirectory}/{ProductLog}";
-            else path = $"{LogsDirectory}/{OtherLog}";
+            else
+            {
+                path = $"{LogsDirectory}/{OtherLog}";
+                log = $"[{type.GetType()}] {log}";
+            }
 
 
             IOController.WriteLog(path, log);
