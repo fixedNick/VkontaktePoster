@@ -167,8 +167,8 @@ namespace VkontaktePoster
                     {
                         acc.CommunitiesData.Add(newCommunity.Address, CommunityType.ClosedWaiting);
                     }
-
                 }
+                IOController.UpdateSingleItem(acc);
             }
         }
 
@@ -181,6 +181,8 @@ namespace VkontaktePoster
         {
             switch (communityType)
             {
+                case VKCommunity.CommunityType.None:
+                    return CommunityType.None;
                 case VKCommunity.CommunityType.Free:
                     return VKAccount.CommunityType.Free;
                 case VKCommunity.CommunityType.Suggest:
