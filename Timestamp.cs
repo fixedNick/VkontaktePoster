@@ -93,13 +93,13 @@ namespace VkontaktePoster
         /// <returns>Возвращает TRUE, если новый день наступил, следует обновить данные для аккаунта. Возвращает FALSE, если новый день все еще не наступил</returns>
         public static bool IsNewDayForPosting(VKAccount account, string communityAddress)
         {
-            if (account.PostedTime.ContainsKey(communityAddress) == false)
+            if (account.PostedTimesToday.ContainsKey(communityAddress) == false)
                 throw new Exception($"Не удалось найти ключ {communityAddress} в списке сообществ аккаунта {account.Credentials.Login}");
 
             var currentDay = DateTime.Now.Day;
             var currentMonth = DateTime.Now.Month;
-            var lastPostDay = account.PostedTime[communityAddress].Day;
-            var lastPostMonth = account.PostedTime[communityAddress].Month;
+            var lastPostDay = account.PostedTimesToday[communityAddress].Key.Day;
+            var lastPostMonth = account.PostedTimesToday[communityAddress].Key.Month;
 
             if (currentMonth == lastPostMonth && currentDay == lastPostDay)
                 return false;
