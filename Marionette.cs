@@ -134,13 +134,6 @@ namespace VkontaktePoster
 
                 driver.GoToUrl(currentCommunity.Address);
 
-                if(currentCommunity.Type == VKCommunity.CommunityType.None)
-                {
-                    var actualComType = GetCommunityType();
-                    currentCommunity.Type = (actualComType == VKCommunity.CommunityType.ClosedWaiting || actualComType == VKCommunity.CommunityType.ClosedJoined) ? VKCommunity.CommunityType.Closed : actualComType; 
-                }
-
-
                 if(account.CommunitiesData[currentCommunity.Address] == VKAccount.CommunityType.None)
                 {
                     /// Если тип сообщества определен для VKCommunity и это не Closed, то устанавливаем его аккаунту
