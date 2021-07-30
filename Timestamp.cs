@@ -73,7 +73,7 @@ namespace VkontaktePoster
         }
 
         /// <summary>
-        /// Обновляет информацию о дате последнего поста в группе address для VKAccount
+        /// Обновляет информацию о дате последнего поста в группе address для VKAccount и информация о количестве постов за день
         /// </summary>
         /// <param name="account">VKAccount</param>
         /// <param name="address">VKCommunity address</param>
@@ -83,6 +83,8 @@ namespace VkontaktePoster
                 account.PostedTime[address] = DateTime.Now;
             else
                 account.PostedTime.Add(address, DateTime.Now);
+
+            account.PostedTimesToday[address] = new KeyValuePair<DateTime, int>(DateTime.Now, account.PostedTimesToday[address].Value + 1);
         }
 
         /// <summary>

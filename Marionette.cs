@@ -125,11 +125,6 @@ namespace VkontaktePoster
                     Logger.Write(this, $"Аккаунту {account.Credentials.Login} не удалось оставить пост в {currentCommunity.Address}. Причина: Достингнут дневной лимит");
                     continue;
                 }
-                else
-                {
-                    account.PostedTimesToday[currentCommunity.Address] = new KeyValuePair<DateTime, int>(DateTime.Now, account.PostedTimesToday[currentCommunity.Address].Value + 1);
-                    IOController.UpdateSingleItem(account);
-                }
                 #endregion
 
                 driver.GoToUrl(currentCommunity.Address);
@@ -183,8 +178,7 @@ namespace VkontaktePoster
                 Logger.Write(this, $"Аккаунт {account.Credentials.Login} начинает писать пост о продукте {account.Product.Name}");
                 MakePost(account.Product);
                 Timestamp.PostMade(account, currentCommunity.Address);
-                IOController.UpdateSingleItem(account); // TODO - Проверить, требуется ли это
-                IOController.UpdateSingleItem(currentCommunity); // TODO - Проверить, требуется ли это
+                IOController.UpdateSingleItem(account);
             }
 
             // TODO
