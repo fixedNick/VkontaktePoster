@@ -37,13 +37,12 @@ namespace VkontaktePoster
         /// </summary>
         public void Exit()
         {
+            driver.StopDriver();
             foreach (var dr in Drivers)
             {
                 if (dr == this)
                     Drivers.Remove(this);
             }
-
-            driver.StopDriver();
         }
 
         /// <summary>
@@ -93,7 +92,14 @@ namespace VkontaktePoster
             {
                 var currentCommunity = VKCommunity.Communities[groupIndex];
 
-#region Проверка временных промежутков
+                #region Проверка временных промежутков
+                if (Timestamp.IsNewDayForPosting(account, currentCommunity.Address) == true)
+                {
+                    account.PostedTimesToday[currentCommunity.Address] = new KeyValuePair<DateTime, int>(account.PostedTimesToday[currentCommunity.Address].Key, 0);
+                    Logger.Write(this, $"Для аккаунта {account.Credentials.Login} в сообществе {currentCommunity.Address} обнулен дневной счетчик. Причина: Новый день");
+                    IOController.UpdateSingleItem(account);
+                }
+
                 if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
                 {
                     var nextPostInMinutes = TimeSpan.Zero;
@@ -127,6 +133,13 @@ namespace VkontaktePoster
                 #endregion
 
                 driver.GoToUrl(currentCommunity.Address);
+
+                if(currentCommunity.Type == VKCommunity.CommunityType.None)
+                {
+                    var actualComType = GetCommunityType();
+                    currentCommunity.Type = (actualComType == VKCommunity.CommunityType.ClosedWaiting || actualComType == VKCommunity.CommunityType.ClosedJoined) ? VKCommunity.CommunityType.Closed : actualComType; 
+                }
+
 
                 if(account.CommunitiesData[currentCommunity.Address] == VKAccount.CommunityType.None)
                 {

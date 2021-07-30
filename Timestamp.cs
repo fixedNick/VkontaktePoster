@@ -86,6 +86,27 @@ namespace VkontaktePoster
         }
 
         /// <summary>
+        /// Узнает наступил ли ноывй день с момента последнего поста
+        /// </summary>
+        /// <param name="account">Аккаунт, который совершал постинг</param>
+        /// <param name="communityAddress">Сообщество в котором аккаунт совершал пост</param>
+        /// <returns>Возвращает TRUE, если новый день наступил, следует обновить данные для аккаунта. Возвращает FALSE, если новый день все еще не наступил</returns>
+        public static bool IsNewDayForPosting(VKAccount account, string communityAddress)
+        {
+            if (account.PostedTime.ContainsKey(communityAddress) == false)
+                throw new Exception($"Не удалось найти ключ {communityAddress} в списке сообществ аккаунта {account.Credentials.Login}");
+
+            var currentDay = DateTime.Now.Day;
+            var currentMonth = DateTime.Now.Month;
+            var lastPostDay = account.PostedTime[communityAddress].Day;
+            var lastPostMonth = account.PostedTime[communityAddress].Month;
+
+            if (currentMonth == lastPostMonth && currentDay == lastPostDay)
+                return false;
+            else return true;
+        }
+
+        /// <summary>
         /// Определяет сколько времени осталось аккаунту до следующего постав в сообществе
         /// </summary>
         /// <param name="account">аккаунт</param>
