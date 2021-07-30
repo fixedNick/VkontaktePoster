@@ -38,6 +38,7 @@ namespace VkontaktePoster
         public void Exit()
         {
             driver.StopDriver();
+            Account.FreeAccount(this);
             foreach (var dr in Drivers)
             {
                 if (dr == this)

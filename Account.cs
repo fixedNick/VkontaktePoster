@@ -37,6 +37,18 @@ namespace VkontaktePoster
             vkAccount.ClearProducts();
         }
 
+        public static void FreeAccount(Marionette driver)
+        {
+            foreach(var a in Accounts)
+            {
+                if(a.marionette.Equals(driver))
+                {
+                    Accounts.Remove(a);
+                    break;
+                }
+            }
+        }
+
         /// <summary>
         /// Initialize connections btw VKAccount & Product [1:1], Marionette & VKAccount
         /// </summary>
