@@ -34,6 +34,14 @@ namespace VkontaktePoster
                 log = $"[{type.GetType()}] {log}";
             }
 
+            var day = DateTime.Now.Day <= 9 ? 0.ToString() + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString();
+            var month = DateTime.Now.Month <= 9 ? 0.ToString() + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString();
+            var h = DateTime.Now.Hour <= 9 ? 0.ToString() + DateTime.Now.Hour.ToString() : DateTime.Now.Hour.ToString();
+            var m = DateTime.Now.Minute <= 9 ? 0.ToString() + DateTime.Now.Minute.ToString() : DateTime.Now.Minute.ToString();
+            var s = DateTime.Now.Second <= 9 ? 0.ToString() + DateTime.Now.Second.ToString() : DateTime.Now.Second.ToString();
+
+            log = $"[{day}/{month}/{DateTime.Now.Year} {h}/{m}/{s}] {log}"; 
+
 
             IOController.WriteLog(path, log);
         }
