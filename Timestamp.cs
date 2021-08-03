@@ -38,17 +38,35 @@ namespace VkontaktePoster
         /// <param name="acc">VKAccount</param>
         /// <param name="address">VKCommunity address</param>
         /// <returns></returns>
-        public static bool IsTimeBetweenPostsPast(VKAccount acc, string address)
+        public static bool IsTimeBetweenPostsPast(VKAccount acc, string address, ref TimeSpan closestTimeToCheck)
         {
             foreach (var kvp in acc.PostedTime)
             {
                 if (kvp.Key.Equals(address))
                 {
                     if ((kvp.Value + acc.Times.TIME_BETWEEN_REPEAT_POST) <= DateTime.Now)
+                    {
+                        // Если аккаунт может постить, то ближайшее время для следующего поста составит время его ожидания
+                        if (closestTimeToCheck.TotalSeconds > acc.Times.TIME_BETWEEN_REPEAT_POST.TotalSeconds)
+                            closestTimeToCheck = acc.Times.TIME_BETWEEN_REPEAT_POST;
                         return true;
+                    }
+
+                    // Если время еще не прошло, проверяем, не меньше ли это время ожидания, чем наше текущее
+                    // Если меньше, то переназаначаем значение closestTimeToCheck, возможно именно данное количество времени драйвер будет ждать до перезапуска
+
+                    var timeBeforeNextPost = DateTime.Now.Subtract(kvp.Value + acc.Times.TIME_BETWEEN_REPEAT_POST);
+                    if (timeBeforeNextPost.TotalSeconds < closestTimeToCheck.TotalSeconds)
+                        closestTimeToCheck = timeBeforeNextPost;
+
                     return false;
                 }
             }
+
+            // Если аккаунт может постить, то ближайшее время для следующего поста составит время его ожидания
+            if (closestTimeToCheck.TotalSeconds > acc.Times.TIME_BETWEEN_REPEAT_POST.TotalSeconds)
+                closestTimeToCheck = acc.Times.TIME_BETWEEN_REPEAT_POST;
+
             return true;
         }
 
@@ -96,7 +114,10 @@ namespace VkontaktePoster
         public static bool IsNewDayForPosting(VKAccount account, string communityAddress)
         {
             if (account.PostedTimesToday.ContainsKey(communityAddress) == false)
-                throw new Exception($"Не удалось найти ключ {communityAddress} в списке сообществ аккаунта {account.Credentials.Login}");
+            {
+                account.PostedTimesToday.Add(communityAddress, new KeyValuePair<DateTime, int>(DateTime.Now,0));
+                return false;
+            }
 
             var currentDay = DateTime.Now.Day;
             var currentMonth = DateTime.Now.Month;

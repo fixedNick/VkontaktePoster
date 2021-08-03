@@ -89,6 +89,7 @@ namespace VkontaktePoster
 
         public void StartPosting(VKAccount account)
         {
+            TimeSpan closestTimeToCheck = new TimeSpan(999, 22, 22, 22);
             for (int groupIndex = 0; groupIndex < VKCommunity.Communities.Count && StopPostingClicked == false; groupIndex++)
             {
                 var currentCommunity = VKCommunity.Communities[groupIndex];
@@ -101,7 +102,7 @@ namespace VkontaktePoster
                     IOController.UpdateSingleItem(account);
                 }
 
-                if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address) == false)
+                if (Timestamp.IsTimeBetweenPostsPast(account, currentCommunity.Address, ref closestTimeToCheck) == false)
                 {
                     var nextPostInMinutes = TimeSpan.Zero;
                     try
@@ -121,6 +122,8 @@ namespace VkontaktePoster
                     continue;
                 }
 
+                // TODO
+                // Тут можно через out Получать ближайшее время следующего постинга
                 if (Timestamp.IsPostLimitReached(account, currentCommunity.Address) == true)
                 {
                     Logger.Write(this, $"Аккаунту {account.Credentials.Login} не удалось оставить пост в {currentCommunity.Address}. Причина: Достингнут дневной лимит");
@@ -184,9 +187,21 @@ namespace VkontaktePoster
 
             // TODO
             // тут мы вырубаем драйвер и перекидываем его в режим ожидания
+            Logger.Write(this, $"Аккаунт {account.Credentials.Login} завершил работу по постингу, возобновление работы через {closestTimeToCheck}");
             Exit();
+            WaitForNextStart(closestTimeToCheck, account);
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="timeToWait"></param>
+        private void WaitForNextStart(TimeSpan timeToWait, VKAccount account)
+        {
+            Thread.Sleep((int) timeToWait.TotalMilliseconds);
+            // Сделать аналог Form1.StartAccountsThread
+            // Требуется сделать аналог для одного аккаунта.
+        }
         
 
         /// <summary>
@@ -195,18 +210,18 @@ namespace VkontaktePoster
         /// <returns></returns>
         private VKCommunity.CommunityType GetCommunityType()
         {
-            if(driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
+            if (driver.FindCss(".group_closed_text", isNullAcceptable: true, useFastSearch: true) != null)
+            {
+                // Закрытая группа
+                if (driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
+                    return VKCommunity.CommunityType.ClosedWaiting; // Request didnt send // We have to send request
+                if (driver.FindCss("#group_wall", isNullAcceptable: true, useFastSearch: true) != null)
+                    return VKCommunity.CommunityType.ClosedJoined; // We joined current community
+            }
+            else if (driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
                 return VKCommunity.CommunityType.Free; // Free community
             else if(driver.FindCss("#public_subscribe", isNullAcceptable: true, useFastSearch: true) != null)
                 return VKCommunity.CommunityType.Suggest; // Public community
-            else if(driver.FindCss(".group_closed_text", isNullAcceptable: true, useFastSearch: true) != null)
-            {
-                // Закрытая группа
-                if(driver.FindCss("#join_button", isNullAcceptable: true, useFastSearch: true) != null)
-                    return VKCommunity.CommunityType.ClosedWaiting; // Request didnt send // We have to send request
-                if(driver.FindCss("#group_wall", isNullAcceptable: true, useFastSearch: true) != null)
-                    return VKCommunity.CommunityType.ClosedJoined; // We joined current community
-            }
 
             // Не удалось определить тип группы
             return VKCommunity.CommunityType.Unknown;

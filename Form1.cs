@@ -124,14 +124,15 @@ namespace VkontaktePoster
 
         private void button8_Click(object sender, EventArgs e)
         {
+            Logger.Write(this, "Процесс постинга запущен.");
             ThreadPool.QueueUserWorkItem(StartAccountsThread);
         }
 
         private void StartAccountsThread(object obj)
         {
-            VKAccount.AssociateCommunities();
-            Account.InitializeRelations();
-            Account.StartDrivers();
+            VKAccount.AssociateCommunities(); Logger.Write(this, "Все сообщества привязаны к аккаунтам вк.");
+            Account.InitializeRelations(); Logger.Write(this, "vkAccount & Marionette связаны в Account.");
+            Account.StartDrivers(); Logger.Write(this, "Все доступные драйверы запущены");
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -165,7 +166,7 @@ namespace VkontaktePoster
         {
             OpenFileDialog dialog = new OpenFileDialog()
             {
-                Filter = "Image Files(*.BMP;*.JPG;*.GIF;*JPEG)|*.BMP;*.JPG;*.GIF;*.JPEG",
+                Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.JPEG;*.PNG)|*.BMP;*.JPG;*.GIF;*.JPEG;*.PNG",
                 Multiselect = true
             };
 

@@ -71,8 +71,20 @@ namespace VkontaktePoster
             }
 
             // Connect Driver to VKAccount and create Account object
+            // Проверяет, работает или привязан ли VKAccount к Account&Marionette
             for( int z = 0; z < vkAccounts.Count; z++ )
             {
+                bool IsVKAccountAlreadyConnectedToAccount = false;
+                foreach(var sysAcc in Accounts)
+                {
+                    if (sysAcc.vkAccount.Credentials.Login == vkAccounts[z].Credentials.Login)
+                    {
+                        IsVKAccountAlreadyConnectedToAccount = true;
+                        break;
+                    }
+                }
+                if (IsVKAccountAlreadyConnectedToAccount) continue;
+
                 if (vkAccounts[z].IsProductConnected() == false) continue;
                 Account account = new Account(new Marionette(defaultDriverSettings), vkAccounts[z]);
             }
